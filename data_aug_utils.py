@@ -3,6 +3,7 @@ import tensorflow as tf
 import os
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing.image import array_to_img
+import PIL
 
 def rotate_image(img, degrees=90):
     """Rotate the given image by the specified degrees.
@@ -120,14 +121,22 @@ def get_data_file(folder_name, dataset_url):
         untar=True
     )
 
-def save_augmented_images(images, labels, output_dir, class_indices):
-    """Save augmented images to labeled directories."""
+def save_augmented_images(images, labels, base_output_dir, class_indices):
+    """
+    Save augmented images to labeled directories within their respective class subfolders.
+
+    Parameters:
+    - images: Array of images to be saved.
+    - labels: Corresponding labels for the images, used to determine subfolder.
+    - base_output_dir (str): Base directory to store the class subdirectories.
+    - class_indices (dict): Dictionary mapping class names to label indices.
+    """
     # Reverse class indices to get label names from indices
     label_names = {v: k for k, v in class_indices.items()}
     for idx, (image, label) in enumerate(zip(images, labels)):
         # Get class label
-        label_name = label_names[label.argmax()]
-        class_dir = os.path.join(output_dir, label_name)
+        label_name = label_names[np.argmax(label)]  # label.argmax() may also be used, depending on your label format
+        class_dir = os.path.join(base_output_dir, label_name)
         if not os.path.exists(class_dir):
             os.makedirs(class_dir)
         # Save image
