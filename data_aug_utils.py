@@ -5,50 +5,6 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing.image import array_to_img
 import PIL
 
-def rotate_image(img, degrees=90):
-    """Rotate the given image by the specified degrees.
-    Must be a multiple of 90.
-    """
-    if degrees % 90 != 0:
-        raise ValueError("degrees must be a multiple of 90.")
-    k = degrees // 90
-    return tf.image.rot90(img, k=k)
-
-def flip_image(img, mode='horizontal'):
-    """Flip the image either horizontally or vertically."""
-    if mode == 'horizontal':
-        return tf.image.flip_left_right(img)
-    elif mode == 'vertical':
-        return tf.image.flip_up_down(img)
-    else:
-        raise ValueError("mode must be 'horizontal' or 'vertical'.")
-
-def zoom_image(img, zoom_range=(0.8, 1.2)):
-    """Zoom the image within the specified range. 
-    Assumes the image is square.
-    """
-    if img.shape[0] != img.shape[1]:
-        raise ValueError("Zoom function assumes a square image.")
-    zoom_factor = np.random.uniform(zoom_range[0], zoom_range[1])
-    height, width = img.shape[:2]
-    new_height, new_width = int(height * zoom_factor), int(width * zoom_factor)
-    img = tf.image.resize(img, (new_height, new_width))
-    return tf.image.resize_with_crop_or_pad(img, height, width)
-
-def color_adjust(img, brightness=0, contrast=1):
-    """
-    Adjust the brightness and contrast of the image.
-    
-    Parameters:
-    - brightness (float): A number between -1 and 1, where 0 means no change.
-      Positive values increase the brightness, negative values decrease it.
-    - contrast (float): A number, where 1 means no change. Values greater than 1
-      enhance contrast, and less than 1 reduce contrast. Practical upper limit is around 3.
-    
-    Returns:
-    - A TensorFlow Tensor representing the adjusted image."""
-    img = tf.image.adjust_brightness(img, delta=brightness)
-    return tf.image.adjust_contrast(img, contrast_factor=contrast)
 
 def setup_data_generator(rotation_range=40, width_shift_range=0.2, height_shift_range=0.2,
                          shear_range=0.2, zoom_range=0.2, horizontal_flip=True, fill_mode='nearest'):
