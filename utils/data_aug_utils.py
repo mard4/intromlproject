@@ -4,7 +4,8 @@ import os
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing.image import array_to_img
 import PIL
-
+import shutil
+from sklearn.model_selection import train_test_split
 
 def setup_data_generator(rotation_range=40, width_shift_range=0.2, height_shift_range=0.2,
                          shear_range=0.2, zoom_range=0.2, horizontal_flip=True, fill_mode='nearest'):
@@ -66,16 +67,9 @@ def load_data_from_directory(directory_path, target_size=(150, 150), batch_size=
         class_mode='categorical'
     )
 
-def get_data_file(folder_name, dataset_url):
-    """Download and extract a dataset, returning the local directory path."""
-    if not dataset_url:
-        raise ValueError("Dataset URL cannot be empty.")
-    return tf.keras.utils.get_file(
-        folder_name, 
-        origin=dataset_url, 
-        cache_dir='.', 
-        untar=True
-    )
+
+
+
 
 def save_augmented_images(images, labels, base_output_dir, class_indices):
     """
@@ -98,3 +92,59 @@ def save_augmented_images(images, labels, base_output_dir, class_indices):
         # Save image
         img = array_to_img(image)
         img.save(os.path.join(class_dir, f'aug_{idx}.png'))
+
+
+
+# Assuming all images are in a single directory and categorized by folders
+def create_train_val_test_folders(base_dir, train_size=0.6, val_size=0.2, test_size=0.2):
+    """
+    Splits images into training, validation, and test sets and organizes them into separate subdirectories.
+    
+    This function takes a base directory containing subdirectories, each corresponding to a class. All images in these
+    class directories are then split into training, validation, and test sets according to specified proportions.
+    The images are moved into new subdirectories within the base directory, organized by train, validation, and test sets.
+
+    Parameters:
+    - base_dir (str): The path to the base directory containing subdirectories of classes with images.
+    - train_size (float): The proportion of the dataset to include in the train split (default is 0.6).
+    - val_size (float): The proportion of the dataset to include in the validation split (default is 0.2).
+    - test_size (float): The proportion of the dataset to include in the test split (default is 0.2).
+
+    Returns:
+    None
+
+    Example:
+    >>> base_dir = '/path/to/your/dataset'
+    >>> create_train_val_test_folders(base_dir)
+
+    Note:
+    - The function assumes that the sum of `train_size`, `val_size`, and `test_size` equals 1.0.
+    - The directories 'train', 'val', and 'test' will be created under each class directory in the base directory.
+    - It is assumed that the base directory is structured such that each subdirectory represents a class and contains images.
+    """
+    folders = [os.path.join(base_dir, d) for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
+    
+    for folder in folders:
+        images = [os.path.join(folder, f) for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+        train, temp = train_test_split(images, train_size=train_size, test_size=(val_size+test_size), random_state=42)
+        val, test = train_test_split(temp, train_size=val_size/(val_size + test_size), test_size=test_size/(val_size + test_size), random_state=42)
+
+        # Function to move files
+        def move_files(files, dest):
+            for f in files:
+                shutil.move(f, os.path.join(dest, os.path.basename(f)))
+
+        # Create train, validation, test directories
+        os.makedirs(os.path.join(base_dir, 'train', os.path.basename(folder)), exist_ok=True)
+        os.makedirs(os.path.join(base_dir, 'val', os.path.basename(folder)), exist_ok=True)
+        os.makedirs(os.path.join(base_dir, 'test', os.path.basename(folder)), exist_ok=True)
+
+        # Move files
+        move_files(train, os.path.join(base_dir, 'train', os.path.basename(folder)))
+        move_files(val, os.path.join(base_dir, 'val', os.path.basename(folder)))
+        move_files(test, os.path.join(base_dir, 'test', os.path.basename(folder)))
+
+# Usage
+base_dir = 'Soil types'  # Update this path to your dataset
+target_dir = '.'
+create_train_val_test_folders(base_dir)
