@@ -143,8 +143,3 @@ def create_train_val_test_folders(base_dir, train_size=0.6, val_size=0.2, test_s
         move_files(train, os.path.join(base_dir, 'train', os.path.basename(folder)))
         move_files(val, os.path.join(base_dir, 'val', os.path.basename(folder)))
         move_files(test, os.path.join(base_dir, 'test', os.path.basename(folder)))
-
-# Usage
-base_dir = 'Soil types'  # Update this path to your dataset
-target_dir = '.'
-create_train_val_test_folders(base_dir)

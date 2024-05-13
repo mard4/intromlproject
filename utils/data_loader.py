@@ -1,9 +1,9 @@
 import os
-import zipfile
 import tarfile
 import kaggle
 from PIL import Image, ImageOps
-
+import shutil
+import pandas as pd
 # Downloaders
 
 def download_dataset_kaggle(dataset_url, target_folder):
@@ -41,6 +41,36 @@ def download_dataset_kaggle(dataset_url, target_folder):
 
     kaggle.api.dataset_download_files(kaggle_dataset, path=target_folder, unzip=True)
     return target_folder
+
+def extract_tgz(tgz_path, extract_to=None):
+    """
+    Extracts a .tgz file to a specified directory.
+
+    Args:
+    tgz_path (str): The file path of the .tgz file to be extracted.
+    extract_to (str): Optional. The directory where files will be extracted.
+                      If not specified, extracts to the directory containing the .tgz file.
+
+    Returns:
+    str: The path where the files were extracted.
+    """
+    if extract_to is None:
+        extract_to = os.path.dirname(tgz_path)
+
+    # Ensure the extraction directory exists
+    if not os.path.exists(extract_to):
+        os.makedirs(extract_to)
+
+    # Open the tgz file and extract it
+    with tarfile.open(tgz_path, 'r:gz') as tar:
+        tar.extractall(path=extract_to)
+    
+    print(f"Files have been extracted to: {extract_to}")
+    return extract_to
+
+# Example usage:
+# extract_path = extract_tgz('/path/to/your/file.tgz')
+
 
 def get_data_file(folder_name, dataset_url):
     """Download and extract a dataset, returning the local directory path."""
