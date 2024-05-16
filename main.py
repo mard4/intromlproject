@@ -9,8 +9,12 @@ FOLDERS:
         - CUB
 """
 
+#img_root deve essere sostituito con il corretto path
+# edit: Soil types è la cartella che contiene le cartelle train, val, test perché abbiamo scaricato questo dataset
+# , altrimenti sarebbe stata CUB o altro
 folder = "Soil types"
-img_root = "/home/lorenzo/Desktop/introml/intromlproject/C:/Users/Mardeen/Desktop/fine-grained-imgs/data/C:/Users/Mardeen/Desktop/fine-grained-imgs/data/Soil types"
+# edit: img_root è il path della cartella che contiene le cartella train, val, test, settatelo con il path corretto
+img_root = "/home/lorenzo/Desktop/cartella/Soil types"
 
 """
 MODELS: 

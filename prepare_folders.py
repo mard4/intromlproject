@@ -8,10 +8,11 @@ warnings.filterwarnings("ignore")
 """
 
 data_path = "."
-folder_name = "C:/Users/Mardeen/Desktop/fine-grained-imgs/data"   # scarica dove stai lavorando ora
+folder_name = "."   # scarica dove stai lavorando ora
+#folder has to be edited
 folder = "/Soil types"
 dataset_url = "https://www.kaggle.com/datasets/prasanshasatpathy/soil-types"
-img_root = "C:/Users/Mardeen/Desktop/fine-grained-imgs/data/Soil types"
+img_root = "./Soil types"
 
 # !!! if you're downloading a dataset from Kaggle
 download_dataset_kaggle(dataset_url, folder_name)
@@ -21,7 +22,6 @@ download_dataset_kaggle(dataset_url, folder_name)
 
 # !!!! if you're downloading a ZIP file, use also this
 #img_root = extract_tgz(download_dataset_kaggle(dataset_url, folder_name), extract_to=None)
-print("img root", img_root)
 
 # !!! Crea le cartelle train, val, test
 create_train_val_test_folders(img_root, train_size=0.6, val_size=0.2, test_size=0.2)   
