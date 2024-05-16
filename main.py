@@ -9,8 +9,8 @@ FOLDERS:
         - CUB
 """
 
-folder = "CUB"
-img_root = f"C:/Users/Mardeen/Desktop/fine-grained-imgs/data/{folder}"
+folder = "Soil types"
+img_root = "/home/lorenzo/Desktop/introml/intromlproject/C:/Users/Mardeen/Desktop/fine-grained-imgs/data/C:/Users/Mardeen/Desktop/fine-grained-imgs/data/Soil types"
 
 """
 MODELS: 
@@ -26,7 +26,7 @@ transform = transform_dataset(resize=(256,256),
                   mean=[0.485, 0.456, 0.406],
                   std=[0.229, 0.224, 0.225])
 
-train_dataset, val_dataset, test_dataset = read_dataset(img_root)
+train_dataset, val_dataset, test_dataset = read_dataset(img_root, transform=transform)
 num_classes = len(train_dataset.classes)
 
 main(run_name= f"{model_name}_{folder}",
@@ -39,10 +39,10 @@ main(run_name= f"{model_name}_{folder}",
          epochs=10,
          criterion = nn.CrossEntropyLoss(),
          visualization_name= f"{model_name}",
-         img_root=img_root,
+         img_root= img_root,
          save_every=1,
          init_model = init_model(model_name, num_classes),
-         transform = transform_dataset(img_root))
+         transform = transform_dataset())
 
 
 #%tensorboard --logdir logs/fit

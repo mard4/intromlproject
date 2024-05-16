@@ -41,6 +41,7 @@ def split_dataset(dataset):
     return train_dataset, val_dataset, test_dataset
 
 def read_dataset_path(img_root):
+    # RIMUOVERE /TRAIN ETC?
     train_root = f"{img_root}/train"
     val_root = f"{img_root}/val"
     test_root = f"{img_root}/test"
@@ -53,7 +54,11 @@ def read_dataset(img_root, transform):
     Split the dataset into train, validation, and test sets (e.g., 70% train, 10% validation, 20% test)
     """
     train_root, val_root, test_root = read_dataset_path(img_root)
+
     
+    print(f"IL PATH È QUESTO {train_root}")
+    print(f"IL PATH È QUESTO {val_root}")
+    print(f"IL PATH È QUESTO {test_root}")
     #transform = transform_dataset(img_root)
     train_dataset = datasets.ImageFolder(root=train_root, transform=transform)
     val_dataset = datasets.ImageFolder(root=val_root, transform=transform)
