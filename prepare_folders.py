@@ -1,4 +1,4 @@
-from utils.download_data_fromkaggle import *
+from utils.download_data import *
 from utils.data_aug_utils import *
 import warnings
 warnings.filterwarnings("ignore")
