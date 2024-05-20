@@ -2,6 +2,7 @@
 ### Table of Contents
 
 - <a href='#requirements'>Requirements</a>
+- <a href='#folders'>Folders</a>
 - <a href='#datasets'>Datasets</a>
 - <a href='#training L-Net'>Training</a>
 - <a href='#evaluation'>Evaluation</a>
@@ -9,7 +10,30 @@
 - <a href='#reference'>Reference</a>
 
 ## Requirements
-Run pip install -r requirements.txt in bash or powershell in your virtual environment. Our project was originally on Ubuntu 24.04 etc
+Run $pip install -r requirements.txt$ in bash or powershell in your virtual environment. Our project was originally on Ubuntu 24.04 etc.
+Run $prepare_folders.py$ to download the dataset and create the train, test and validation folders.
+Run $main.py$ to start the training/testing loop.
+
+## Folders 
+- .venv
+- main folder (intromlproject)
+    - datasets (now it does not contain anything)
+    - models   (containing pre-trained models)
+    - runs     (containing the checkpoints for tensorboard)
+    - utils
+    - results
+        - data_aug_utils.py   (file containing the data augmentation functions)
+        - download_utils.py   (file containing the download functions)
+        - init_checkpoints.py (file containing the function for the checkpoints)
+        - init_models.py      (file containing the models)
+        - optimizer.py        (file containing functions for the optimizer fixed/custom)
+        - read_dataset.py     (file containing the function to read the dataset)
+        - trainloop.py        (file containing the training/validation/testing loop)
+        - epochs_loop.py      (file containing the epochs loop)
+    - requirements.txt
+    - main.py     (main file to run the training/testing loop)
+    - prepare_folders.py   (file to download the dataset and create the train, test and validation folders)
+
 
 ## How is the data organized?
 
