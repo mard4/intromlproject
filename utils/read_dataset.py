@@ -3,6 +3,10 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+import shutil
+from scipy.io import loadmat
+
 
 def read_dataset_path(img_root):
     """
@@ -112,3 +116,106 @@ def transform_dataset(resize=(256,256), crop=(224,224),
     ])
 
     return transform
+
+def reorganize_dataset_txt(dataset_path, txt_path, new_dataset_path, data_type):
+    """
+    Reorganizes a dataset into a new directory structure.
+
+    The new structure has separate directories for training, validation, and testing data.
+    Each of these directories contains one subdirectory for each class, and each class
+    subdirectory contains the images for that class.
+
+    Parameters:
+    dataset_path (str): The path to the original dataset.
+    txt_path (str): The path to a text file containing image IDs and class labels.
+    new_dataset_path (str): The path where the new dataset structure should be created.
+    data_type (str): The type of data ('train', 'val', or 'test').
+
+    Returns:
+    None
+    """
+    # Create the new dataset directory if it doesn't exist
+    if not os.path.exists(new_dataset_path):
+        os.makedirs(new_dataset_path)
+
+    # Open the text file and read the lines
+    with open(txt_path, 'r') as f:
+        lines = f.readlines()
+
+    # Iterate over the lines in the file
+    for line in lines:
+        # Each line is expected to be in the format 'image_id class_label1 class_label2'
+        image_id, rest = line.strip().split(' ', 1)
+        class_label = rest.replace(' ', '_')
+
+        # Create a new directory for the class if it doesn't exist
+        new_class_dir = os.path.join(new_dataset_path, data_type, class_label)
+        if not os.path.exists(new_class_dir):
+            os.makedirs(new_class_dir)
+
+        # Copy the image to the new directory
+        old_image_path = os.path.join(dataset_path, image_id + '.jpg')
+        new_image_path = os.path.join(new_class_dir, image_id + '.jpg')
+        shutil.copyfile(old_image_path, new_image_path)
+
+
+
+def reorganize_dataset_mat(dataset_path, mat_path, new_dataset_path, data_type):
+    """
+    Reorganizes a dataset into a new directory structure.
+
+    The new structure has separate directories for training, validation, and testing data.
+    Each of these directories contains one subdirectory for each class, and each class
+    subdirectory contains the images for that class.
+
+    Parameters:
+    dataset_path (str): The path to the original dataset.
+    mat_path (str): The path to a .mat file containing image labels.
+    new_dataset_path (str): The path where the new dataset structure should be created.
+    data_type (str): The type of data ('train', 'val', or 'test').
+
+    Returns:
+    None
+    """
+    # Create the new dataset directory if it doesn't exist
+    if not os.path.exists(new_dataset_path):
+        os.makedirs(new_dataset_path)
+
+    # Load the .mat file
+    mat = loadmat(mat_path)
+    labels = mat['labels'][0]
+
+    # Iterate over the labels
+    for i, label in enumerate(labels):
+        # Create a new directory for the class if it doesn't exist
+        new_class_dir = os.path.join(new_dataset_path, data_type, str(label))
+        if not os.path.exists(new_class_dir):
+            os.makedirs(new_class_dir)
+
+        # Copy the image to the new directory
+        old_image_path = os.path.join(dataset_path, 'image_{:05d}.jpg'.format(i+1))
+        new_image_path = os.path.join(new_class_dir, 'image_{:05d}.jpg'.format(i+1))
+        shutil.copyfile(old_image_path, new_image_path)
+
+def final_structure(path, new_folder_name, folder1, folder2, folder3):
+    """
+    Creates a new folder and moves three other folders into it.
+
+    Parameters:
+    path (str): The path where the new folder should be created.
+    new_folder_name (str): The name of the new folder.
+    folder1 (str): The path to the first folder to move.
+    folder2 (str): The path to the second folder to move.
+    folder3 (str): The path to the third folder to move.
+
+    Returns:
+    None
+    """
+    # Create the new folder
+    new_folder_path = os.path.join(path, new_folder_name)
+    os.makedirs(new_folder_path, exist_ok=True)
+
+    # Move the folders into the new folder
+    shutil.move(folder1, new_folder_path)
+    shutil.move(folder2, new_folder_path)
+    shutil.move(folder3, new_folder_path)
