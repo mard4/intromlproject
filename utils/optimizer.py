@@ -1,43 +1,49 @@
 import torch
 
-def get_optimizer(optimizer_type, model, lr, wd, momentum=0.9, betas=(0.9, 0.999), param_groups=None, optim=torch.optim.SGD):
-    """Get the optimizer based on the type."""
-    if optimizer_type == "Fixed":
-        return simple_optimizer(model, lr, wd, momentum, betas, optim)
-    elif optimizer_type == "Custom":
-        if param_groups is None:
-            raise ValueError("param_groups must be provided for custom optimizer")
-        return custom_optimizer(model, lr, wd, param_groups,optim, momentum=momentum, betas=betas)
-    else:
-        raise ValueError(f"Unknown optimizer type: {optimizer_type}")
-
-
-
 def simple_optimizer(model, lr, wd, momentum=0.9, betas=(0.9, 0.999), optim=torch.optim.SGD):
-    """Simple optimizer with the same learning rate for all parameters."""
+    """
+    Simple optimizer with the same learning rate for all parameters.
+
+    Args:
+        model (torch.nn.Module): The model to optimize.
+        lr (float): Learning rate.
+        wd (float): Weight decay.
+        momentum (float, optional): Momentum factor (for SGD). Default is 0.9.
+        betas (tuple, optional): Coefficients used for computing running averages of gradient and its square (for Adam). Default is (0.9, 0.999).
+        optim (torch.optim.Optimizer): Optimizer class (e.g., torch.optim.SGD, torch.optim.Adam).
+
+    Returns:
+        torch.optim.Optimizer: The configured optimizer.
+
+    Raises:
+        ValueError: If an unsupported optimizer is provided.
+    """
     if optim == torch.optim.SGD:
         return optim(params=model.parameters(), lr=lr, weight_decay=wd, momentum=momentum)
-    elif optim == torch.optim.Adam or torch.optim.AdamW:
-        return torch.optim.Adam(params=model.parameters() ,lr=lr, weight_decay=wd, betas=betas)
+    elif optim in [torch.optim.Adam, torch.optim.AdamW]:
+        return optim(params=model.parameters(), lr=lr, weight_decay=wd, betas=betas)
     else:
         raise ValueError(f"Unsupported optimizer: {optim}")
-    
 
 def custom_optimizer(model, lr, wd, param_groups, optim, momentum=0.9, betas=(0.9, 0.999)):
-    """Custom optimizer with different learning rates for specified parameter groups.
+    """
+    Custom optimizer with different learning rates for specified parameter groups.
     Supports SGD and Adam optimizers.
-    
+
     Args:
-        model: The model containing the parameters to optimize.
-        lr: Base learning rate.
-        wd: Weight decay.
-        param_groups: List of parameter group dictionaries, each containing 'prefixes' and optional specific 'lr'.
-        optim: Optimizer class (e.g., torch.optim.SGD, torch.optim.Adam).
-        momentum: Momentum factor (for SGD).
-        betas: Coefficients used for computing running averages of gradient and its square (for Adam).
-    
+        model (torch.nn.Module): The model containing the parameters to optimize.
+        lr (float): Base learning rate.
+        wd (float): Weight decay.
+        param_groups (list): List of parameter group dictionaries, each containing 'prefixes' and optional specific 'lr'.
+        optim (torch.optim.Optimizer): Optimizer class (e.g., torch.optim.SGD, torch.optim.Adam).
+        momentum (float, optional): Momentum factor (for SGD). Default is 0.9.
+        betas (tuple, optional): Coefficients used for computing running averages of gradient and its square (for Adam). Default is (0.9, 0.999).
+
     Returns:
-        optimizer: The configured optimizer.
+        torch.optim.Optimizer: The configured optimizer.
+
+    Raises:
+        ValueError: If an unsupported optimizer class is provided.
     """
     params = []
 
@@ -53,62 +59,42 @@ def custom_optimizer(model, lr, wd, param_groups, optim, momentum=0.9, betas=(0.
 
     if optim == torch.optim.SGD:
         optimizer = optim(params, lr=lr, weight_decay=wd, momentum=momentum)
-    elif optim == torch.optim.Adam:
+    elif optim in [torch.optim.Adam, torch.optim.AdamW]:
         optimizer = optim(params, lr=lr, weight_decay=wd, betas=betas)
     else:
         raise ValueError(f"Unsupported optimizer class: {optim}")
 
     return optimizer
 
+def get_optimizer(optimizer_type, model, lr, wd, momentum=0.9, betas=(0.9, 0.999), param_groups=None, optim=torch.optim.SGD):
+    """
+    Get the optimizer based on the specified type.
 
-# Example usage:
-# model = ...  # Your model here
-# param_groups = [
-#     {'prefixes': ['classifier'], 'lr': 0.001},
-#     {'prefixes': ['features']}
-# ]
-# optimizer = get_optimizer('Custom', model, lr=0.01, wd=0.0001, momentum=0.9, betas=(0.9, 0.999), param_groups=param_groups)
+    Args:
+        optimizer_type (str): The type of optimizer to use ("simple" or "custom").
+        model (torch.nn.Module): The model to optimize.
+        lr (float): Learning rate.
+        wd (float): Weight decay.
+        momentum (float, optional): Momentum for optimizers that use it. Default is 0.9.
+        betas (tuple, optional): Betas for optimizers that use them. Default is (0.9, 0.999).
+        param_groups (list, optional): Parameter groups for custom optimizer. Required for "custom" type.
+        optim (torch.optim.Optimizer, optional): The optimizer class to use. Default is torch.optim.SGD.
 
+    Returns:
+        torch.optim.Optimizer: The initialized optimizer.
 
-# Example usage:
-# model = ...  # Your model here
-# param_groups = [
-#     {'prefixes': ['classifier'], 'lr': 0.001},
-#     {'prefixes': ['features']}
-# ]
-# optimizer = custom_optimizer(model, lr=0.01, wd=0.0001, param_groups=param_groups, optim_type='Adam')
+    Raises:
+        ValueError: If an unknown optimizer type is provided or param_groups is not provided for "custom" type.
+    """
+    optimizer_initializers = {
+        "simple": simple_optimizer,
+        "custom": custom_optimizer
+    }
 
+    if optimizer_type not in optimizer_initializers:
+        raise ValueError(f"Unknown optimizer type: {optimizer_type}")
 
-# Example usage:
-# model = ...  # Your model here
-# optimizer_type = "Custom"
-# lr = 0.01
-# wd = 0.0005
-# momentum = 0.9
-# param_groups = [
-#     {'prefixes': ['classifier'], 'lr': lr * 10},
-#     {'prefixes': ['features']}
-# ]
-# optimizer = get_optimizer(optimizer_type, model, lr, wd, momentum, param_groups)
+    if optimizer_type == "custom" and param_groups is None:
+        raise ValueError("param_groups must be provided for custom optimizer")
 
-# def optimizer_alexnet(model, lr, wd, momentum):
-#     """Alexnet optimizer with different learning rates for the final layer"""
-#     # We will create two groups of weights, one for the newly initialized layer
-#     # and the other for rest of the layers of the network
-#     final_layer_weights = []
-#     rest_of_the_net_weights = []
-
-#     # Iterate through the layers of the network
-#     for name, param in model.named_parameters():
-#         if name.startswith('classifier.6'):
-#             final_layer_weights.append(param)
-#         else:
-#             rest_of_the_net_weights.append(param)
-
-#     # Assign the distinct learning rates to each group of parameters
-#     optimizer = torch.optim.SGD([
-#         {'params': rest_of_the_net_weights},
-#         {'params': final_layer_weights, 'lr': lr}
-#     ], lr=lr / 10, weight_decay=wd, momentum=momentum)
-    
-#     return optimizer
+    return optimizer_initializers[optimizer_type](model, lr, wd, momentum, betas, param_groups, optim)

@@ -107,6 +107,19 @@ def organize_images(csv_train, image_folder, csv_val=None):
     print(f"Images have been organized into 'train' and 'val' subfolders in '{image_folder}'.")
 
 def create_train_val_test_folders(base_dir, train_size=0.6, val_size=0.2, test_size=0.2):
+
+    """
+    Splits images in subdirectories of the base directory into training, validation, and test sets,
+    and moves them to corresponding 'train', 'val', and 'test' directories within the base directory.
+
+    Parameters:
+    base_dir (str): The path to the base directory containing subdirectories of images.
+    train_size (float): The proportion of images to include in the training set (default is 0.6).
+    val_size (float): The proportion of images to include in the validation set (default is 0.2).
+    test_size (float): The proportion of images to include in the test set (default is 0.2).
+
+    """
+
     folders = [os.path.join(base_dir, d) for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
     
     for folder in folders:
@@ -128,6 +141,8 @@ def create_train_val_test_folders(base_dir, train_size=0.6, val_size=0.2, test_s
         move_files(train, os.path.join(base_dir, 'train', os.path.basename(folder)))
         move_files(val, os.path.join(base_dir, 'val', os.path.basename(folder)))
         move_files(test, os.path.join(base_dir, 'test', os.path.basename(folder)))
+    
+    return None
 
 #extractors
 
@@ -182,29 +197,3 @@ def extract_zip(zip_path, extract_to=None):
     
     print(f"Files have been extracted to: {extract_to}")
     return extract_to
-
-
-def resize_images_in_folder(root_folder, width, height):
-    """
-    Resizes all images in the specified folder and its subfolders to the given width and height.
-    
-    Args:
-    root_folder (str): The path to the root folder containing images.
-    width (int): The new width for the images.
-    height (int): The new height for the images.
-    """
-    # Supported image formats
-    extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
-    
-    # Walk through all directories and files in the root folder
-    for subdir, dirs, files in os.walk(root_folder):
-        for file in files:
-            # Check if the file is an image
-            if file.lower().endswith(extensions):
-                image_path = os.path.join(subdir, file)
-                with Image.open(image_path) as img:
-                    # Resize the image using the high-quality LANCZOS filter
-                    img = img.resize((width, height), Image.Resampling.LANCZOS)
-                    # Save the resized image back to the same location
-                    img.save(image_path)
-                    print(f'Resized and saved: {image_path}')
