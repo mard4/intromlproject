@@ -1,13 +1,13 @@
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
-from lightning.pytorch import Trainer
-from lightning.pytorch import loggers as pl_loggers
-
+#from lightning.pytorch import Trainer
+#from lightning.pytorch import loggers as pl_loggers
 from utils.init_models import *
 from utils.init_checkpoints import *
 from utils.trainloop import *
 from utils.read_dataset import *
 from utils.optimizer import * 
+import logging
 
 def main(run_name,
         batch_size,
@@ -69,7 +69,6 @@ def main(run_name,
         writer.add_scalar("train/accuracy", train_accuracy, e + 1)
         writer.add_scalar("val/loss", val_loss, e + 1)
         writer.add_scalar("val/accuracy", val_accuracy, e + 1)
-        
         writer.add_scalar("test/loss", test_loss, e + 1)
         writer.add_scalar("test/accuracy", test_accuracy, e + 1)
 
@@ -97,4 +96,3 @@ def main(run_name,
     writer.close()
 
     return net, optimizer
-
