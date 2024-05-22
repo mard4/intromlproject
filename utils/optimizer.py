@@ -97,4 +97,7 @@ def get_optimizer(optimizer_type, model, lr, wd, momentum=0.9, betas=(0.9, 0.999
     if optimizer_type == "custom" and param_groups is None:
         raise ValueError("param_groups must be provided for custom optimizer")
 
-    return optimizer_initializers[optimizer_type](model, lr, wd, momentum, betas, param_groups, optim)
+    if optimizer_type == "simple":
+        return optimizer_initializers[optimizer_type](model, lr, wd, momentum, betas, optim)
+    else:
+        return optimizer_initializers[optimizer_type](model, lr, wd, param_groups, optim, momentum, betas)
