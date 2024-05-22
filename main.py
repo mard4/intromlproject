@@ -15,10 +15,15 @@ FOLDERS:
         - CUB
 """
 
-folder = "Soil types"
-path = "/home/disi/cartella1/intromlproject/"
-img_root = path + folder
+img_root = "/home/disi/ml/intromlproject/datasets/Aerei"
+# Standardize the path
+standardized_path = os.path.normpath(img_root)
 
+# Split the path into components
+path, folder = os.path.split(standardized_path)
+
+print("Path:", path)
+print("Folder:", folder)
 """
 MODELS: 
         alexnet, efficientnet, inceptionv4, inceptionv4_freeze, inceptionv3, inceptionv3_freeze, densenet201

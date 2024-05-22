@@ -219,3 +219,46 @@ def final_structure(path, new_folder_name, folder1, folder2, folder3):
     shutil.move(folder1, new_folder_path)
     shutil.move(folder2, new_folder_path)
     shutil.move(folder3, new_folder_path)
+
+def cleanup(folder_path):
+    """
+    Deletes all subfolders and files within the specified folder that are not named 'train', 'test', or 'val'.
+    
+    Parameters:
+    folder_path (str): The path to the folder to be cleaned.
+    
+    The function iterates through each item in the specified folder path. If the item is a directory and 
+    its name is not 'train', 'test', or 'val', it deletes the directory and all its contents. Similarly, 
+    if the item is a file and its name is not 'train', 'test', or 'val', it deletes the file. 
+    
+    Example usage:
+    delete_unwanted_items('/path/to/your/folder')
+    
+    Note:
+    Use this function with caution, as it will permanently delete files and folders that are not named 
+    'train', 'test', or 'val'.
+    """
+    
+    # Define the allowed folder and file names
+    allowed_names = {'train', 'test', 'val'}
+    
+    # Iterate through each item in the specified folder path
+    for item in os.listdir(folder_path):
+        item_path = os.path.join(folder_path, item)
+        
+        # Check if the item is a directory
+        if os.path.isdir(item_path):
+            if item not in allowed_names:
+                # Delete the directory and all its contents
+                shutil.rmtree(item_path)
+                print(f"Deleted folder: {item_path}")
+            else:
+                print(f"Skipped folder: {item_path}")
+        # Check if the item is a file
+        elif os.path.isfile(item_path):
+            if item not in allowed_names:
+                # Delete the file
+                os.remove(item_path)
+                print(f"Deleted file: {item_path}")
+            else:
+                print(f"Skipped file: {item_path}")
