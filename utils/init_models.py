@@ -5,32 +5,36 @@ import timm
     
 def init_model(model_name, num_classes):
     """
-    Given a model_name configured before in file main.py, this function 
-    initializes the model with the specified number of classes or freezing things.
+    Given a model_name configured before in the main.py file, this function 
+    initializes the model with the specified number of classes or freezing settings.
 
     Args:
-        model_name (_type_): _description_
-        num_classes (_type_): _description_
+        model_name (str): The name of the model to initialize.
+        num_classes (int): The number of output classes for the model.
 
     Returns:
-        model
+        torch.nn.Module: The initialized model.
     """
+    # Dictionary mapping model names to their initialization functions
+    model_initializers = {
+        "inceptionv4": initialize_adv_inception_v4,
+        "inceptionv4_freeze": initialize_adv_inception_v4_freeze,
+        "inceptionv3": initialize_adv_inception_v3,
+        "inceptionv3_freeze": initialize_adv_inception_v3_freeze,
+        "efficientnet": initialize_efficientnet,
+        "alexnet": initialize_alexnet,
+        "densenet201": initialize_densenet201,
+        #add here new models
+    }
     
-    if model_name=="inceptionv4":
-        model = initialize_adv_inception_v4(num_classes)
-    elif model_name=="inceptionv4_freeze":
-        model = initialize_adv_inception_v4_freeze(num_classes)
-    elif model_name=="inceptionv3":
-        model = initialize_adv_inception_v3(num_classes)
-    elif model_name=="inceptionv3_freeze":
-        model = initialize_adv_inception_v3_freeze(num_classes)
-    elif model_name=="efficientnet":
-        model = initialize_efficientnet(num_classes)
-    elif model_name=="alexnet":
-        model = initialize_alexnet(num_classes)
+    # Get the initializer function based on the model_name
+    if model_name in model_initializers:
+        model = model_initializers[model_name](num_classes)
     else:
-        raise ValueError("Model name not found")
+        raise ValueError(f"Model name '{model_name}' not found")
+    
     return model
+
     
 def initialize_alexnet(num_classes):
     """
@@ -88,9 +92,6 @@ def initialize_adv_inception_v3_freeze(num_classes):
         param.requires_grad = False
 
     # Unfreeze the later layers
-    # You need to determine how many layers you want to unfreeze.
-    # For Inception models, you might start by unfreezing the last few inception blocks
-    # Here's an example assuming the model has a features block containing the layers
     if hasattr(model, 'features'):
         # Unfreeze the last few layers
         for param in model.features[-2:].parameters():
@@ -151,4 +152,10 @@ def initialize_adv_inception_v4_freeze(num_classes):
     model.last_linear = CustomClassifier(num_features, num_classes)
     return model
 
-
+def initialize_densenet201(num_classes):
+    """Load the pre-trained DenseNet-201 model with ImageNet weights
+    and replace the classifier with a new one for fine-tuning
+    """
+    model = torchvision.models.densenet201(pretrained=True)
+    model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    return model
