@@ -66,6 +66,7 @@ def custom_optimizer(model, lr, wd, param_groups, optim, momentum=0.9, betas=(0.
 
     return optimizer
 
+
 def get_optimizer(optimizer_type, model, lr, wd, momentum=0.9, betas=(0.9, 0.999), param_groups=None, optim=torch.optim.SGD):
     """
     Get the optimizer based on the specified type.
@@ -94,7 +95,9 @@ def get_optimizer(optimizer_type, model, lr, wd, momentum=0.9, betas=(0.9, 0.999
     if optimizer_type not in optimizer_initializers:
         raise ValueError(f"Unknown optimizer type: {optimizer_type}")
 
-    if optimizer_type == "custom" and param_groups is None:
-        raise ValueError("param_groups must be provided for custom optimizer")
-
-    return optimizer_initializers[optimizer_type](model, lr, wd, momentum, betas, param_groups, optim)
+    if optimizer_type == "custom":
+        if param_groups is None:
+            raise ValueError("param_groups must be provided for custom optimizer")
+        return optimizer_initializers[optimizer_type](model, lr, wd, param_groups, optim, momentum, betas)
+    else:
+        return optimizer_initializers[optimizer_type](model, lr, wd, momentum, betas, optim)
