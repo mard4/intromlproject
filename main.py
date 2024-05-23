@@ -19,7 +19,6 @@ img_root = '/home/disi/ml/intromlproject/datasets/Aerei'
 path = path = os.path.dirname(img_root)
 folder = os.path.basename(img_root)
 
-
 """
 MODELS: 
         alexnet, efficientnet, inceptionv4, inceptionv4_freeze, inceptionv3, inceptionv3_freeze, densenet201
