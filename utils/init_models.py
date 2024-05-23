@@ -2,7 +2,7 @@ import torch.nn as nn
 import torchvision
 from efficientnet_pytorch import EfficientNet
 import timm
-    
+
 def init_model(model_name, num_classes):
     """
     Given a model_name configured before in the main.py file, this function 

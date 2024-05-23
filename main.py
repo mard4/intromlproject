@@ -15,15 +15,10 @@ FOLDERS:
         - CUB
 """
 
-img_root = "/home/disi/ml/intromlproject/datasets/Aerei"
-# Standardize the path
-standardized_path = os.path.normpath(img_root)
+img_root = '/home/disi/ml/intromlproject/datasets/Aerei'
+path = path = os.path.dirname(img_root)
+folder = os.path.basename(img_root)
 
-# Split the path into components
-path, folder = os.path.split(standardized_path)
-
-print("Path:", path)
-print("Folder:", folder)
 """
 MODELS: 
         alexnet, efficientnet, inceptionv4, inceptionv4_freeze, inceptionv3, inceptionv3_freeze, densenet201
@@ -53,17 +48,18 @@ momentum = 0.9
 betas = (0.9, 0.999)
 epochs = 10
 criterion = nn.CrossEntropyLoss()
-batch_size = 60
+batch_size = 64
 optimizer_type = "custom"  # "simple" or "custom"
 optimz = torch.optim.Adam
 param_groups = [{'prefixes': ['classifier'], 'lr': learning_rate * 10},
                 {'prefixes': ['features']}]
 
-#########################################  DO NOT EDIT BELOW THIS LINE  #########################################
+
 log_file_path = os.path.join(path, 'training.log')
 logger = setup_logger(log_file_path)
-
 logger.info("Starting the training process")
+#########################################  DO NOT EDIT BELOW THIS LINE  #########################################
+
 
 train_data, val_data, test_data = read_dataset(img_root, transform=transform)
 num_classes = len(train_data.classes)

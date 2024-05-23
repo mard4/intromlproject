@@ -27,7 +27,7 @@ def main(run_name,
         save_every,
         init_model,
         transform,
-        val_loader=None):
+        val_loader):
     
     writer = SummaryWriter(log_dir=f"runs/{run_name}")  #tensorboad
        
