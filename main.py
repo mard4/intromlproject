@@ -15,9 +15,10 @@ FOLDERS:
         - CUB
 """
 
-folder = "Soil types"
-path = "/home/disi/cartella1/intromlproject/"
-img_root = path + folder
+img_root = '/home/disi/ml/intromlproject/datasets/Aerei'
+path = path = os.path.dirname(img_root)
+folder = os.path.basename(img_root)
+
 
 """
 MODELS: 
@@ -48,17 +49,18 @@ momentum = 0.9
 betas = (0.9, 0.999)
 epochs = 10
 criterion = nn.CrossEntropyLoss()
-batch_size = 60
+batch_size = 64
 optimizer_type = "custom"  # "simple" or "custom"
 optimz = torch.optim.Adam
 param_groups = [{'prefixes': ['classifier'], 'lr': learning_rate * 10},
                 {'prefixes': ['features']}]
 
-#########################################  DO NOT EDIT BELOW THIS LINE  #########################################
+
 log_file_path = os.path.join(path, 'training.log')
 logger = setup_logger(log_file_path)
-
 logger.info("Starting the training process")
+#########################################  DO NOT EDIT BELOW THIS LINE  #########################################
+
 
 train_data, val_data, test_data = read_dataset(img_root, transform=transform)
 num_classes = len(train_data.classes)
