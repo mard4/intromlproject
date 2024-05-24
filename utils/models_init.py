@@ -309,3 +309,21 @@ def initialize_SENet(num_classes):
     model = SEResNet50(num_classes)
     return model
 
+
+def initialize_SENet_freeze(num_classes):
+    """
+    Load the pre-trained SEResNet50 model with ImageNet weights
+    and replace the classifier with a new one for fine-tuning.
+    The first layer is frozen.
+
+    Args:
+        num_classes (int): The number of output classes for the model.
+
+    Returns:
+        torch.nn.Module: The SEResNet50 model with the modified classifier.
+    """
+    model = SEResNet50(num_classes)
+    
+    model.freeze_layers(['conv1', 'bn1', 'layer1', 'layer2', 'layer3'])
+    
+    return model   

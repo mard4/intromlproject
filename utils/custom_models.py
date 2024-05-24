@@ -20,7 +20,6 @@ class SEBlock(nn.Module):
         return x * y.expand_as(x)
 
 
-
 class SEBottleneck(nn.Module):
     expansion = 4
 
@@ -62,7 +61,6 @@ class SEBottleneck(nn.Module):
         return out
 
 
-
 class SEResNet50(nn.Module):
     def __init__(self, num_classes=1000):
         super(SEResNet50, self).__init__()
@@ -71,10 +69,14 @@ class SEResNet50(nn.Module):
         self.bn1 = resnet.bn1
         self.relu = resnet.relu
         self.maxpool = resnet.maxpool
-        self.layer1 = resnet.layer1
-        self.layer2 = resnet.layer2
-        self.layer3 = resnet.layer3
-        self.layer4 = resnet.layer4
+        
+        # Example of using _make_layer to construct layer1, layer2, layer3, and layer4
+        self.inplanes = 64  # Set initial number of input channels
+        self.layer1 = self._make_layer(SEBottleneck, 64, 3)  # 3 SEBottleneck blocks, 64 output planes
+        self.layer2 = self._make_layer(SEBottleneck, 128, 4, stride=2)  # 4 SEBottleneck blocks, 128 output planes, stride 2
+        self.layer3 = self._make_layer(SEBottleneck, 256, 6, stride=2)  # 6 SEBottleneck blocks, 256 output planes, stride 2
+        self.layer4 = self._make_layer(SEBottleneck, 512, 3, stride=2)  # 3 SEBottleneck blocks, 512 output planes, stride 2
+
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(2048, num_classes)  # Modify the fully connected layer to match the number of classes
 
@@ -92,19 +94,23 @@ class SEResNet50(nn.Module):
         x = self.fc(x)
         return x
     
-    def _make_layer(self, block, planes, blocks, stride=1, reduction=8):  # Adjusted reduction ratio
+    def freeze_layers(self, layers_to_freeze):
+        for name, param in self.named_parameters():
+            if any(layer in name for layer in layers_to_freeze):
+                param.requires_grad = False
+
+    def _make_layer(self, block, planes, blocks, stride=1, reduction=8):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                # conv1x1(self.inplanes, planes * block.expansion, stride),
-                nn.Conv2d(self.inplanes, planes * block.expansion, kernel_size=1, stride=stride, bias=False), # scegli tra le due
+                nn.Conv2d(self.inplanes, planes * block.expansion, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(planes * block.expansion),
             )
 
         layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample, reduction))  # Adjusted reduction ratio
+        layers.append(block(self.inplanes, planes, stride, downsample, reduction))
         self.inplanes = planes * block.expansion
         for _ in range(1, blocks):
-            layers.append(block(self.inplanes, planes, reduction=reduction))  # Adjusted reduction ratio
+            layers.append(block(self.inplanes, planes, reduction=reduction))
 
         return nn.Sequential(*layers)
