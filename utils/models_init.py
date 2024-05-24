@@ -3,6 +3,7 @@ import torchvision
 import torch    
 from efficientnet_pytorch import EfficientNet
 import timm
+from custom_models import SEResNet50
 
 def init_model(model_name, num_classes):
     """
@@ -28,7 +29,9 @@ def init_model(model_name, num_classes):
         "efficientnet": initialize_efficientnet,
         "alexnet": initialize_alexnet,
         "densenet201": initialize_densenet201,
-        'efficientnetv2': initialize_efficientnetv2
+        'efficientnetv2': initialize_efficientnetv2,
+        "efficientnetv2_freeze": initialize_efficientnetv2_freeze,
+        "seresnet50": initialize_SENet 
         # add here new models
     }
     
@@ -253,3 +256,56 @@ def initialize_efficientnetv2(num_classes):
     model.classifier = nn.Linear(model.classifier.in_features, num_classes)
     
     return model
+
+def initialize_efficientnetv2_freeze(num_classes):
+    """
+    Load the pre-trained EfficientNetV2S model with ImageNet weights
+    and replace the classifier with a new one for fine-tuning.
+    The first layer is frozen.
+
+    Args:
+        num_classes (int): The number of output classes for the model.
+
+    Returns:
+        torch.nn.Module: The EfficientNetV2S  model with the modified classifier.
+    """
+    
+    model = torchvision.models.efficientnet_v2_s(pretrained=True)
+    
+    # Freeze all layers in the model first
+    for param in model.parameters():
+        param.requires_grad = False
+
+    # Unfreeze the later layers
+    for param in model.features[-2:].parameters():
+        param.requires_grad = True
+
+    new_classifier = nn.Sequential(
+        nn.Linear(1280, 1024),
+        nn.ReLU(),
+        nn.Dropout(0.5),
+        nn.Linear(1024, 512),
+        nn.ReLU(),
+        nn.Dropout(0.5),
+        nn.Linear(512, num_classes)
+    )
+    
+    model.classifier = new_classifier
+    
+    return model
+
+
+def initialize_SENet(num_classes):
+    """
+    Load the pre-trained SEResNet50 model with ImageNet weights
+    and replace the classifier with a new one for fine-tuning.
+
+    Args:
+        num_classes (int): The number of output classes for the model.
+
+    Returns:
+        torch.nn.Module: The SEResNet50 model with the modified classifier.
+    """
+    model = SEResNet50(num_classes)
+    return model
+
