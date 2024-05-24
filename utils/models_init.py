@@ -3,7 +3,7 @@ import torchvision
 import torch    
 from efficientnet_pytorch import EfficientNet
 import timm
-from custom_models import SEResNet50
+from utils.custom_models import *
 
 def init_model(model_name, num_classes):
     """

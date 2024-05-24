@@ -9,6 +9,7 @@ from utils.logger import *
 from utils.models_init import *
 from utils.training import *
 from utils.optimizers import *
+from utils.custom_models import *
 
 # Configuration
 
@@ -29,14 +30,13 @@ Mean, Std, number of classes for Datasets:
 
 root = '/home/disi/ml'
 img_folder = 'aerei'
-model_name = 'alexnet'
+model_name = 'densenet201'
 
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
-    'dataset_name' : f"{img_folder}", # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
-    # leave checkpoint = None if you don't have one
-    'checkpoint': None,#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
+    'dataset_name': f"{img_folder}",  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
+    'checkpoint': f'{root}/checkpoints/densenet201/densenet201_aerei_epoch10.pth',  # Path to a checkpoint file to resume training
     'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
     'project_name': f'{model_name}_test',  # Weights and Biases project name
     
@@ -49,19 +49,25 @@ config = {
     # Training loop
     'model_name': f'{model_name}',  # Name of the model to use
     'batch_size': 32,  # Batch size (default: 32)
-    'epochs': 10,  # Number of epochs to train (default: 10)
+    'epochs': 30,  # Number of epochs to train (default: 10)
     'optimizer': 'Adam',  # Optimizer to use (default: Adam)
-    'optimizer_type': 'simple',  # Type of optimizer to use (default: simple)
+    'optimizer_type': 'custom',  # Type of optimizer to use (default: simple)
     'learning_rate': 0.001,  # Learning rate (default: 0.001)
     'weight_decay': 0,  # Weight decay for optimizer (default: 0)
     'momentum': 0,  # Momentum for optimizer (default: 0)
     'criterion': 'CrossEntropyLoss',  # Criterion for the loss function (default: CrossEntropyLoss)
-    'dropout' : 0.5,
+    'dropout': 0.5,
     'scheduler': True,
     'step_size': 5,
     'patience': 5,
 
-    #Irrelevant
+    # Parameter groups for custom optimizer
+    'param_groups': [
+        {'prefixes': ['classifier'], 'lr': 0.001},
+        {'prefixes': ['features']}
+    ],
+
+    # Irrelevant
     'device': 'cuda' if torch.cuda.is_available() else 'cpu'  # Device to use for training
 }
 
@@ -69,7 +75,7 @@ config = {
 
 def main(config):
     # Initialize wandb
-    wandb.init(project=config['project_name'])
+    wandb.init(project=config['project_name'], name = f"{config['model_name']}_{config['dataset_name']}_opt: {config['optimizer']}_batch_size: {config['batch_size']}_lr: {config['learning_rate']}", config=config)
 
     # Setup logger
     logger = setup_logger(log_dir=config['save_dir'])
@@ -78,16 +84,25 @@ def main(config):
     model = init_model(config['model_name'], config['num_classes'])
     model.to(config['device'])
 
+
+
     # Define the optimizer
     if config['optimizer_type'] == 'custom':
-        optimizer = create_custom_optimizer(model.parameters(), {
-            'type': config['optimizer'],
-            'lr': config['learning_rate'],
-            'weight_decay': config['weight_decay'],
-            'momentum': config['momentum']
-        })
+        optimizer = custom_optimizer(
+            model=model, 
+            lr=config['learning_rate'],
+            wd=config['weight_decay'], 
+            param_groups=config['param_groups'], 
+            optim=torch.optim.Adam
+        )
+        print("Optimizer custom set succesfully")
     else:
-        optimizer = getattr(torch.optim, config['optimizer'])(model.parameters(), lr=config['learning_rate'])
+        optimizer = getattr(torch.optim, config['optimizer'])(
+            model.parameters(), 
+            lr=config['learning_rate'], 
+            weight_decay=config['weight_decay'], 
+            momentum=config['momentum']
+        )
 
     # Define the loss function
     criterion = getattr(torch.nn, config['criterion'])()
@@ -122,6 +137,7 @@ def main(config):
     # Load checkpoint if specified
     if config['checkpoint']:
         model = load_checkpoint(model, config['checkpoint'], config['device'])
+        print("Checkpoint loaded correctly")
 
     # Early stopping
     counter = 0
