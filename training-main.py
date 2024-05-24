@@ -24,14 +24,17 @@ Mean, Std, number of classes for Datasets:
     - FGVC Aircraft: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
     - Flowers102: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
 """
+root = '/home/disi/ml'
+img_folder = 'Flowers102'
+model_name = 'alexnet'
 config = {
     # Path and directory stuff
-    'data_dir': '/home/disi/machinelearning/datasets',  # Directory containing the dataset
-    'dataset_name' : 'aerei', # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
+    'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
+    'dataset_name' : f"{img_folder}", # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
     # leave checkpoint = None if you don't have one
-    'checkpoint': '/home/disi/machinelearning/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
-    'save_dir': '/home/disi/machinelearning/checkpoints/alexnet',  # Directory to save logs and model checkpoints
-    'project_name': 'alexnet_test',  # Weights and Biases project name
+    'checkpoint': None,#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
+    'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
+    'project_name': f'{model_name}_test',  # Weights and Biases project name
     
     
     # Image transformation 
@@ -41,9 +44,9 @@ config = {
     'std': [0.229, 0.224, 0.225],  # Standard deviation for normalization
 
     # Training loop
-    'model_name': 'alexnet',  # Name of the model to use
+    'model_name': f'{model_name}',  # Name of the model to use
     'batch_size': 32,  # Batch size (default: 32)
-    'epochs': 20,  # Number of epochs to train (default: 10)
+    'epochs': 10,  # Number of epochs to train (default: 10)
     'optimizer': 'Adam',  # Optimizer to use (default: Adam)
     'optimizer_type': 'simple',  # Type of optimizer to use (default: simple)
     'learning_rate': 0.001,  # Learning rate (default: 0.001)
