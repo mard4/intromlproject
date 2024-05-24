@@ -26,8 +26,9 @@ Mean, Std, number of classes for Datasets:
     - FGVC Aircraft: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
     - Flowers102: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
 """
+
 root = '/home/disi/ml'
-img_folder = 'Flowers102'
+img_folder = 'aerei'
 model_name = 'alexnet'
 
 config = {
@@ -38,7 +39,6 @@ config = {
     'checkpoint': None,#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
     'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
     'project_name': f'{model_name}_test',  # Weights and Biases project name
-    
     
     # Image transformation 
     'image_size': 224,  # Size of the input images (default: 224)
@@ -94,7 +94,7 @@ def main(config):
 
     # Define the learning rate scheduler
 
-    if config['scheduler']:
+    if config['scheduler'] == True:
         scheduler = StepLR(optimizer, step_size=config['step_size'], gamma=0.1)
     else:
         scheduler = None
@@ -141,9 +141,8 @@ def main(config):
             model_name=config['model_name'],
             dataset_name=config['dataset_name'],
             save_dir=config['save_dir'],
-            scheduler=scheduler,
             dropout=dropout,
-            scheduler=config['scheduler'],
+            scheduler=scheduler,
             device=config['device']
         )
         print(f"Epoch {epoch} completed. Train Loss: {train_loss}, Train Acc: {train_accuracy}, Val Loss: {val_loss}, Val Acc: {val_accuracy}")
