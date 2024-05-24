@@ -28,6 +28,7 @@ def init_model(model_name, num_classes):
         "efficientnet": initialize_efficientnet,
         "alexnet": initialize_alexnet,
         "densenet201": initialize_densenet201,
+        'efficientnetv2': initialize_efficientnetv2
         # add here new models
     }
     
@@ -227,4 +228,28 @@ def load_checkpoint(model, checkpoint_path, device="cuda"):
     """
     model.load_state_dict(torch.load(checkpoint_path, map_location=device))
     model.to(device)
+    return model
+
+def initialize_efficientnetv2(num_classes):
+    """
+    Load the pre-trained EfficientNetV2S model with ImageNet weights
+    and replace the classifier with a new one for fine-tuning.
+    The first layer is frozen.
+
+    Args:
+        num_classes (int): The number of output classes for the model.
+
+    Returns:
+        torch.nn.Module: The EfficientNetV2S  model with the modified classifier.
+    """
+    
+    model = torchvision.models.efficientnet_v2_s(pretrained=True)
+    
+    # Freeze the first layer
+    first_layer = model.features[0]
+    for param in first_layer.parameters():
+        param.requires_grad = False
+    
+    model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    
     return model
