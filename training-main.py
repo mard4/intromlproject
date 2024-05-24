@@ -3,6 +3,8 @@ import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import wandb
+from torch.nn import Dropout
+from torch.optim.lr_scheduler import StepLR
 from utils.logger import *
 from utils.models_init import *
 from utils.training import *
@@ -27,6 +29,7 @@ Mean, Std, number of classes for Datasets:
 root = '/home/disi/ml'
 img_folder = 'Flowers102'
 model_name = 'alexnet'
+
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
@@ -53,6 +56,10 @@ config = {
     'weight_decay': 0,  # Weight decay for optimizer (default: 0)
     'momentum': 0,  # Momentum for optimizer (default: 0)
     'criterion': 'CrossEntropyLoss',  # Criterion for the loss function (default: CrossEntropyLoss)
+    'dropout' : 0.5,
+    'scheduler': True,
+    'step_size': 5,
+    'patience': 5,
 
     #Irrelevant
     'device': 'cuda' if torch.cuda.is_available() else 'cpu'  # Device to use for training
@@ -85,6 +92,19 @@ def main(config):
     # Define the loss function
     criterion = getattr(torch.nn, config['criterion'])()
 
+    # Define the learning rate scheduler
+
+    if config['scheduler']:
+        scheduler = StepLR(optimizer, step_size=config['step_size'], gamma=0.1)
+    else:
+        scheduler = None
+
+    # Define the dropout layer
+    if config['dropout'] is not None:
+        dropout = Dropout(p=config['dropout'])
+    else:
+        dropout = None
+
     # Define data transformations
     transform = transforms.Compose([
         transforms.Resize((config['image_size'], config['image_size'])),
@@ -103,8 +123,14 @@ def main(config):
     if config['checkpoint']:
         model = load_checkpoint(model, config['checkpoint'], config['device'])
 
+    # Early stopping
+    counter = 0
+    patience = config['patience']
+    best_val_loss = float('inf')
+
     # Training loop
     for epoch in range(1, config['epochs'] + 1):
+
         train_loss, train_accuracy, val_loss, val_accuracy = train_one_epoch(
             model=model,
             train_loader=train_loader,
@@ -115,9 +141,22 @@ def main(config):
             model_name=config['model_name'],
             dataset_name=config['dataset_name'],
             save_dir=config['save_dir'],
+            scheduler=scheduler,
+            dropout=dropout,
+            scheduler=config['scheduler'],
             device=config['device']
         )
         print(f"Epoch {epoch} completed. Train Loss: {train_loss}, Train Acc: {train_accuracy}, Val Loss: {val_loss}, Val Acc: {val_accuracy}")
+
+            # Early stopping
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            counter = 0
+        else:
+            counter += 1
+            if counter >= patience:
+                print(f'Validation loss did not improve for {patience} epochs. Early stopping...')
+                break
 
 if __name__ == "__main__":
     main(config)
