@@ -113,4 +113,3 @@ wcwidth==0.2.13
 webencodings==0.5.1
 Werkzeug==3.0.3
 wrapt==1.16.0
-duvsohbv@duvsohbv-HP-Z2-Tower-G4-Workstation:~$ pip list
