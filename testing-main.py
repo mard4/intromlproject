@@ -24,15 +24,16 @@ Mean, Std, number of classes for Datasets:
 """
 
 root = '/home/disi/ml'
-img_folder = 'Flowers102'
+img_folder = 'fiori'
 model_name = 'efficientnetv2'
-checkpoint_pth = f'efficientnetv2_Flowers102_epoch10.pth'
+checkpoint_pth = f'efficientnetv2_fiori_epoch10.pth'
+
 # Configuration
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
     'dataset_name': f'{img_folder}',  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
-    'checkpoint': f'{root}/checkpoints/{model_name}/{checkpoint_pth}',  # Path to a checkpoint file to load
+    'checkpoint': f'{root}/checkpoints/{model_name}_{img_folder}/{checkpoint_pth}',  # Path to a checkpoint file to load
     'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
     'project_name': f'{model_name}_test',  # Weights and Biases project name
     

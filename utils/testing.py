@@ -71,6 +71,7 @@ def test_model_exam(net, test_loader, cost_function, device="cuda"):
         "images": preds,
         "groupname": "your_group_name"
     }
+    print(res)
     submit(res)
 
     return test_loss, test_accuracy

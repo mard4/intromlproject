@@ -29,15 +29,16 @@ Mean, Std, number of classes for Datasets:
 """
 
 root = '/home/disi/ml'
-img_folder = 'Flowers102'
+img_folder = 'fiori'
 model_name = 'efficientnetv2'
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
     'dataset_name' : f"{img_folder}", # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
     # leave checkpoint = None if you don't have one
-    'checkpoint': f'{root}/checkpoints/efficientnetv2_bellezza/efficientnetv2_Flowers102_epoch10_bellezza.pth',#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
-    'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
+    'checkpoint': None,#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
+    'save_dir': f'{root}/checkpoints/{model_name}_{img_folder}',  # Directory to save logs and model checkpoints
+    
     'project_name': f'{model_name}_test',  # Weights and Biases project name
     
     # Image transformation 
