@@ -9,9 +9,9 @@ from utils.logger import setup_logger
 from utils.models_init import init_model, load_checkpoint
 
 root = '/home/disi/ml'
-img_folder = 'Flowers102'
+img_folder = 'fiori'
 model_name = 'efficientnetv2'
-checkpoint_pth = f'efficientnetv2_Flowers102_epoch10.pth'
+checkpoint_pth = f'efficientnetv2_fiori_epoch10.pth'
 
 """
 Image Sizes:
@@ -32,7 +32,7 @@ Mean, Std, number of classes for Datasets:
 config = {
     'data_dir': f'{root}/datasets/{img_folder}',
     'dataset_name': img_folder,
-    'checkpoint': f'{root}/checkpoints/{model_name}/{checkpoint_pth}',
+    'checkpoint': f'{root}/checkpoints/{model_name}_{img_folder}/{checkpoint_pth}',
     'save_dir': f'{root}/checkpoints/{model_name}',
     'project_name': f'{model_name}_test',
     'image_size': 224,
