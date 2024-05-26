@@ -29,14 +29,14 @@ Mean, Std, number of classes for Datasets:
 """
 
 root = '/home/disi/ml'
-img_folder = 'Flowers102'
+img_folder = 'aircraft'
 model_name = 'efficientnetv2'
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
     'dataset_name' : f"{img_folder}", # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
     # leave checkpoint = None if you don't have one
-    'checkpoint': f'{root}/checkpoints/efficientnetv2_bellezza/efficientnetv2_Flowers102_epoch10_bellezza.pth',#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
+    'checkpoint':  None,#f'{root}/checkpoints/efficientnetv2/efficientnetv2_aircraft_epoch10.pth', # Path to a checkpoint file to resume training
     'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
     'project_name': f'{model_name}_test',  # Weights and Biases project name
     
@@ -48,11 +48,11 @@ config = {
 
     # Training loop
     'model_name': f'{model_name}',  # Name of the model to use
-    'batch_size': 16,  # Batch size (default: 32)
+    'batch_size': 52,  # Batch size (default: 32)
     'epochs': 10,  # Number of epochs to train (default: 10)
     'optimizer': 'SGD',  # Optimizer to use (default: Adam) or SGD
     'optimizer_type': 'simple',  # Type of optimizer to use (default: simple)
-    'learning_rate': 0.001,  # Learning rate (default: 0.001)
+    'learning_rate': 0.08573324997589683,  # Learning rate (default: 0.001)
     'weight_decay': 0.1,  # Weight decay for optimizer (default: 0)
     'momentum': 0.2,  # Momentum for optimizer (default: 0)
     'criterion': 'CrossEntropyLoss',  # Criterion for the loss function (default: CrossEntropyLoss)
@@ -88,8 +88,6 @@ def main(config):
     model.to(config['device'])
     
     logger.info(f"Configurations: {config}")
-
-
 
 
     # Define the optimizer
@@ -169,7 +167,7 @@ def main(config):
         )
         print(f"Epoch {epoch} completed. Train Loss: {train_loss}, Train Acc: {train_accuracy}, Val Loss: {val_loss}, Val Acc: {val_accuracy}")
 
-            # Early stopping
+        # Early stopping
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             counter = 0

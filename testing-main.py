@@ -24,9 +24,9 @@ Mean, Std, number of classes for Datasets:
 """
 
 root = '/home/disi/ml'
-img_folder = 'Flowers102'
+img_folder = 'aircraft'
 model_name = 'efficientnetv2'
-checkpoint_pth = f'efficientnetv2_Flowers102_epoch10.pth'
+checkpoint_pth = f'optuna/efficientnetv2_aircraft_epoch9.pth'
 # Configuration
 config = {
     # Path and directory stuff
