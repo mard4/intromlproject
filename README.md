@@ -1,4 +1,7 @@
-# readme
+# Project on Fine-Grained Image Classification
+
+This project is part of a Machine Learning course at the University of Trento.
+Fine-Grained Image Classification is a task in computer vision where the goal is to classify images into subcategories within a larger category. For example, classifying different species of birds or different types of flowers. This task is considered to be fine-grained because it requires the model to distinguish between subtle differences in visual appearance and patterns, making it more challenging than regular image classification tasks. 
 
 ### Table of Contents
 
@@ -14,7 +17,7 @@
 
 This project has been tested on an azure machine running ubuntu.![neofetch](images-readme/neofetch.png)
 
-Create a folder (I suggest you to call it "ml" to avoid editing more paths), navigate inside it and clone the repository. Create a virtual environment, activate it, then run `pip install -r requirements.txt `
+Create a folder (I suggest you to call it "ml" to avoid editing more paths), navigate inside it and clone the repository. Create a virtual environment, activate it  `source .venv/bin/activate `, then run `pip install -r requirements.txt `.
 
 Note that you should also have an nvidia gpu and cuda drivers installed, otherwhise the models will be loaded in cpu and will be much slower and prone to crashes.
 
@@ -91,3 +94,8 @@ Now that our model is ready, we can test it.
 Open the `testing-main.py` and notice how the file is extremely similar to the training one. The most important thing is to make sure to select the correct model and path to your save file (a file ending in .pth) to load its weights. Make sure that the test dataset is loaded correctly. Then just run the file from the virtual environment like we did for the training one.  
 
 ## Reference
+
+## Authors
+- [Lorenzo Chicco](https://github.com/lorenzochicco99/)
+- [Martina D'Angelo](https://github.com/mard4/)
+- [Enrico Guerriero](https://github.com/enricoguerriero/)
