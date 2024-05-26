@@ -30,12 +30,17 @@ def init_model(model_name, num_classes):
         "alexnet": initialize_alexnet,
         "densenet201": initialize_densenet201,
         'efficientnetv2': initialize_efficientnetv2,
+        'vit_base_patch16_224': initialize_vit_base_patch16_224,
         "efficientnetv2_freeze": initialize_efficientnetv2_freeze,
         "seresnet50": initialize_SENet,
+<<<<<<< HEAD
         "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block,
         "seresnet50_freeze": initialize_SENet_freeze_except_last,
         "vit": initialize_ViT,
         "vit_freeze": initialize_ViT_freeze_except_last
+=======
+        "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block
+>>>>>>> 6a05d1390997a5d82224d117e7e9e1838683f6b7
         # add here new models
     }
     
@@ -221,6 +226,33 @@ def initialize_densenet201(num_classes):
     model.classifier = nn.Linear(model.classifier.in_features, num_classes)
     return model
 
+
+import torchvision.models as models
+import torch.nn as nn
+
+def initialize_densenet201_freeze_1st_block(num_classes, freeze_first_n_blocks=1):
+    # Load the pre-trained DenseNet-201 model
+    model = models.densenet201(pretrained=True)
+    
+    # Accessing features of the DenseNet
+    features = model.features
+    
+    # Freeze the specified number of dense blocks
+    block_count = 0
+    for child in features.children():
+        if isinstance(child, nn.Sequential):  # Each dense block is a Sequential module
+            block_count += 1
+            if block_count <= freeze_first_n_blocks:
+                for param in child.parameters():
+                    param.requires_grad = False
+            else:
+                break
+
+    # Replacing the classifier with a new one for the given number of classes
+    model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    
+    return model
+
 def load_checkpoint(model, checkpoint_path, device="cuda"):
     """
     Load model weights from a checkpoint.
@@ -250,13 +282,49 @@ def initialize_efficientnetv2(num_classes):
         torch.nn.Module: The EfficientNetV2S  model with the modified classifier.
     """
     
-    model = torchvision.models.efficientnet_v2_s(pretrained=True)
+    model = torchvision.models.efficientnet_v2_s(weights=torchvision.models.EfficientNet_V2_S_Weights.IMAGENET1K_V1)
     
     # Freeze the first layer
     first_layer = model.features[0]
     for param in first_layer.parameters():
         param.requires_grad = False
     
+    # Modify the classifier for the desired number of output classes
+    in_features = model.classifier[1].in_features  # Access the in_features of the second layer of the classifier
+    model.classifier[1] = nn.Linear(in_features, num_classes)
+
+    return model
+
+def initialize_vit_base_patch16_224(num_classes):
+    """roba EnricoMardeen"""
+    model_name = 'vit_base_patch16_224'
+    model = timm.create_model(model_name, pretrained=True)
+    freeze_layers_except_last = False
+    if freeze_layers_except_last:
+
+        # freezing
+        for param in model.parameters():
+            param.requires_grad = False
+
+        # sfreezing
+        model.head = nn.Linear(model.head.in_features, num_classes)
+        for param in model.head.parameters():
+            param.requires_grad = True
+
+    total_params = sum(p.numel() for p in model.parameters())
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    frozen_params = total_params - trainable_params
+
+    print(f'Total parameters: {total_params}')
+    print(f'Trainable parameters: {trainable_params}')
+    print(f'Frozen parameters: {frozen_params}')
+
+
+    # if freeze_layers_except_last:
+    #     optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=1e-4)
+    # else:
+    #     optimizer = optim.Adam(model.parameters(), lr=1e-4)
+    return model
     model.classifier = nn.Linear(model.classifier.in_features, num_classes)
     
     return model
@@ -327,6 +395,7 @@ def initialize_SENet_freeze_except_last(num_classes):
     """
     model = SEResNet50(num_classes, freeze_layers_except_last = True)
     
+<<<<<<< HEAD
     return model
 
 def initialize_ViT(num_classes):
@@ -342,3 +411,8 @@ def initialize_ViT_freeze_except_last(num_classes):
     '''
     model = ViT(num_classes, freeze_layers_except_last = True)
     return model
+=======
+    model.freeze_layers(['conv1', 'bn1', 'layer1', 'layer2', 'layer3'])
+    
+    return model   
+>>>>>>> 6a05d1390997a5d82224d117e7e9e1838683f6b7

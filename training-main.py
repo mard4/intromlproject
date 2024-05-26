@@ -29,16 +29,17 @@ Mean, Std, number of classes for Datasets:
 """
 
 root = '/home/disi/ml'
-img_folder = 'air'
-model_name = 'seresnet50'
-
+img_folder = 'fiori'
+model_name = 'initialize_densenet201_freeze_1st'
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
-    'dataset_name': f"{img_folder}",  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
-    'checkpoint': None, #f'{root}/checkpoints/densenet201/densenet201_aerei_epoch10.pth',  # Path to a checkpoint file to resume training
-    'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
-    'project_name': f'{model_name}_prova',  # Weights and Biases project name
+    'dataset_name' : f"{img_folder}", # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
+    # leave checkpoint = None if you don't have one
+    'checkpoint': None,#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
+    'save_dir': f'{root}/checkpoints/{model_name}_{img_folder}',  # Directory to save logs and model checkpoints
+    
+    'project_name': f'{model_name}_test',  # Weights and Biases project name
     
     # Image transformation 
     'image_size': 224,  # Size of the input images (default: 224)
@@ -48,13 +49,13 @@ config = {
 
     # Training loop
     'model_name': f'{model_name}',  # Name of the model to use
-    'batch_size': 64,  # Batch size (default: 32)
-    'epochs': 10,  # Number of epochs to train (default: 10)
-    'optimizer': 'Adam',  # Optimizer to use (default: Adam)
-    'optimizer_type': 'custom',  # Type of optimizer to use (default: simple)
-    'learning_rate': 0.0001,  # Learning rate (default: 0.001)
-    'weight_decay': 0.0001,  # Weight decay for optimizer (default: 0)
-    'momentum': 0,  # Momentum for optimizer (default: 0)
+    'batch_size': 32,  # Batch size (default: 32)
+    'epochs': 40,  # Number of epochs to train (default: 10)
+    'optimizer': 'Adam',  # Optimizer to use (default: Adam) or SGD
+    'optimizer_type': 'simple',  # Type of optimizer to use (default: simple)
+    'learning_rate': 0.001,  # Learning rate (default: 0.001)
+    'weight_decay': 0.1,  # Weight decay for optimizer (default: 0)
+    'momentum': 0.2,  # Momentum for optimizer (default: 0)
     'criterion': 'CrossEntropyLoss',  # Criterion for the loss function (default: CrossEntropyLoss)
     'dropout': 0.5,
     'scheduler': True,
@@ -75,7 +76,10 @@ config = {
 
 def main(config):
     # Initialize wandb
-    wandb.init(project=config['project_name'], name = f"{config['model_name']}_{config['dataset_name']}_opt: {config['optimizer']}_batch_size: {config['batch_size']}_lr: {config['learning_rate']}", config=config)
+    wandb.init(project=config['project_name'],
+               name=f"{config['model_name']}_{config['dataset_name']}_opt: {config['optimizer']}_batch_size: {config['batch_size']}_lr: {config['learning_rate']}",
+               sync_tensorboard=True,
+               config=config)
 
     # Setup logger
     logger = setup_logger(log_dir=config['save_dir'])
@@ -83,8 +87,8 @@ def main(config):
     # Initialize the model
     model = init_model(config['model_name'], config['num_classes'])
     model.to(config['device'])
-
-
+    
+    logger.info(f"Configurations: {config}")
 
     # Define the optimizer
     if config['optimizer_type'] == 'custom':
@@ -95,14 +99,22 @@ def main(config):
             param_groups=config['param_groups'], 
             optim=torch.optim.Adam
         )
-        print("Optimizer custom set succesfully")
+        print("Optimizer custom set successfully")
     else:
-        optimizer = getattr(torch.optim, config['optimizer'])(
-            model.parameters(), 
-            lr=config['learning_rate'], 
-            weight_decay=config['weight_decay'], 
-            momentum=config['momentum']
-        )
+        # Dynamically create a dictionary of arguments based on the optimizer type
+        optimizer_args = {
+            "params": model.parameters(),
+            "lr": config['learning_rate'],
+            "weight_decay": config['weight_decay']
+        }
+        
+        # Add 'momentum' only if the optimizer supports it (e.g., not for Adam)
+        if 'momentum' in config and config['optimizer'] not in ['Adam', 'AdamW']:
+            optimizer_args['momentum'] = config['momentum']
+        
+        # Create the optimizer using the config and the dynamically created arguments
+        optimizer = getattr(torch.optim, config['optimizer'])(**optimizer_args)
+
 
     # Define the loss function
     criterion = getattr(torch.nn, config['criterion'])()

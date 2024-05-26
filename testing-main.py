@@ -23,14 +23,19 @@ Mean, Std, number of classes for Datasets:
     - Flowers102: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
 """
 
+root = '/home/disi/ml'
+img_folder = 'fiori'
+model_name = 'efficientnetv2'
+checkpoint_pth = f'efficientnetv2_fiori_epoch10.pth'
+
 # Configuration
 config = {
     # Path and directory stuff
-    'data_dir': '/home/disi/machinelearning/datasets',  # Directory containing the dataset
-    'dataset_name': 'aerei',  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
-    'checkpoint': '/home/disi/machinelearning/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to load
-    'save_dir': '/home/disi/machinelearning/checkpoints/alexnet',  # Directory to save logs and model checkpoints
-    'project_name': 'alexnet_test',  # Weights and Biases project name
+    'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
+    'dataset_name': f'{img_folder}',  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
+    'checkpoint': f'{root}/checkpoints/{model_name}_{img_folder}/{checkpoint_pth}',  # Path to a checkpoint file to load
+    'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
+    'project_name': f'{model_name}_test',  # Weights and Biases project name
     
     # Image transformation 
     'image_size': 224,  # Size of the input images (default: 224)
@@ -39,8 +44,8 @@ config = {
     'std': [0.229, 0.224, 0.225],  # Standard deviation for normalization
 
     # Testing loop
-    'model_name': 'alexnet',  # Name of the model to use
-    'batch_size': 32,  # Batch size (default: 32)
+    'model_name': f'{model_name}',  # Name of the model to use
+    'batch_size': 16,  # Batch size (default: 32)
     'criterion': 'CrossEntropyLoss',  # Criterion for the loss function (default: CrossEntropyLoss)
 
     # Irrelevant
@@ -73,7 +78,8 @@ def main(config):
     None
     """
     # Initialize wandb
-    wandb.init(project=config['project_name'])
+    wandb.init(project=config['project_name'],
+               name=f"TEST_{config['model_name']}_{config['dataset_name']}_batch_size: {config['batch_size']}")
 
     # Setup logger
     logger = setup_logger(log_dir=config['save_dir'])
@@ -83,9 +89,9 @@ def main(config):
     model.to(config['device'])
 
     # Modify the classifier layer to match the current dataset's number of classes
-    if config['model_name'] == 'alexnet':
-        num_ftrs = model.classifier[6].in_features
-        model.classifier[6] = torch.nn.Linear(num_ftrs, config['num_classes'])
+    # if config['model_name'] == 'alexnet':
+    #     num_ftrs = model.classifier[6].in_features
+    #     model.classifier[6] = torch.nn.Linear(num_ftrs, config['num_classes'])
 
     # Load checkpoint
     if config['checkpoint']:
