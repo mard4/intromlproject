@@ -70,7 +70,7 @@ All you have to do is follow the comments `@edit` and edit accordingly to your c
 
 Only the name of the specific dataset and the name of the folders containing the images will differ based on what you downloaded.
 
-#### Model training
+#### Model training and testing
 
 You can check the `model_initializers` dictionary inside the `init_model` function in the `models_init.py` to see all the models implemented, copy and paste the name of the model you want to use, then open the `training-main.py` to set the training up.
 
@@ -78,14 +78,16 @@ Paste in the variable `model_name` what you just copied, then edit the variables
 
 After this, edit the files inside the config however you desire, the f-strings will allow for a smoother experience automatically constructing the correct paths for everything that will be tracked during the training.
 
-
-
 Once you have set the training up, you can just run the file from the terminal (remember to have the virtual environment activated).
 
-#### Model testing
-
-The file is extremely similar to the training one, just make sure to choose the correct path to your .pth file.
 
 
+After you trained your model, there will be a new folder which will contain the weights saved as a .pth file. If you wish to keep training the model, you can just edit the `training-main.py` file adding the checkpoint instead of leaving it to None. You can keep repeating this until you are satisfied with your results.
+
+
+
+Now that our model is ready, we can test it. 
+
+Open the `testing-main.py` and notice how the file is extremely similar to the training one. The most important thing is to make sure to select the correct model and path to your save file (a file ending in .pth) to load its weights. Make sure that the test dataset is loaded correctly. Then just run the file from the virtual environment like we did for the training one.  
 
 ## Reference
