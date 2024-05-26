@@ -12,9 +12,8 @@
 
 ## Installation
 
-This project has been tested on an azure machine running ubuntu.
+This project has been tested on an azure machine running ubuntu.![neofetch](images-readme/neofetch.png)
 
-![Example Image](images-readme/neofetch.png)
 Create a folder (I suggest you to call it "ml" to avoid editing more paths), navigate inside it and clone the repository. Create a virtual environment, activate it, then run `pip install -r requirements.txt `
 
 Note that you should also have an nvidia gpu and cuda drivers installed, otherwhise the models will be loaded in cpu and will be much slower and prone to crashes.
@@ -24,58 +23,69 @@ Note that you should also have an nvidia gpu and cuda drivers installed, otherwh
 The starting configuration will look something like this:
 
 - virtualenvironment
+
 - intromlproject
+  
   - requirements.txt
   
-  - data_setupper.ipynb (notebook used to download and prepare data)
+  - data_setupper.ipynb $\to$ notebook used to download and prepare data
   
-  - training-main.py (python script that trains and validates the chosen model)
+  - training-main.py $\to$ python script that trains and validates the chosen model
   
-  - testing-main.py (python script that tests the provided model)
+  - testing-main.py $\to$ python script that tests the provided model.
   
-  utils
+  - testing-main-exam.py $\to$ python script that tests a model and 
   
-  - data_aug_utils.py   (file containing the data augmentation functions)
-  - download_utils.py   (file containing the download functions)
-  - init_checkpoints.py (file containing the function for the checkpoints)
-  - init_models.py      (file containing the models)
-  - optimizer.py        (file containing functions for the optimizer fixed/custom)
-  - read_dataset.py     (file containing the function to read the dataset)
-  - trainloop.py        (file containing the training/validation/testing loop)
-  - epochs_loop.py      (file containing the epochs loop)
-  
-  
-  
-  - main.py     (main file to run the training/testing loop)
-  - prepare_folders.py   (file to download the dataset and create the train, test and validation folders)
+  - utils/
+    
+    - augmentation.py $\to$ contains functions for data augmentation.
+    
+    - custom_models.py $\to$ contains functions to built models from scratch.
+    
+    - downloader.py $\to$ contains functions to download data from different sources.
+    
+    - extractors.py $\to$ contains functions to extract different archived files
+    
+    - logger.py $\to$ contains a function which initializes the logger.
+    
+    - models_init.py $\to$ contains functions to initialize models from already existing libraries.
+    
+    - optimizers.py $\to$ contains a function to implement a custom optimizer. #todo
+    
+    - testing.py $\to$ contains the function to test a model and send files to the competition server.
+    
+    - training.py $\to$ contains the functions to train and validate the model for a single epoch. 
+    
+    - testing.py $\to$ contains the function to test a model storing the predictions in a dictionary and submits it to a server.
 
-## How is the data organized?
+## Usage
 
-main folder -> train,test,val -> classes -> images
+#### Dataset preparation
 
-## Instructions
+Navigate inside the repository, then you can use the `data_setupper.ipynb` notebook to download any dataset of your choosing. We decided to use a notebook instead of a .py file because the datasets we tried came from different sources (kaggle, torch, generic websites) and we wanted to have the flexibility to just download them and store them inside a datasets folder, which will be automatically created during your first download. 
 
-Navigate inside the repository, then you can use the `data_setupper.ipynb` notebook to download any dataset of your choosing. We decided to use a notebook instead of a .py file is because the datasets we tried came from different sources (kaggle, torch, generic websites) and we wanted to have the flexibility to just download them and store them inside a datasets folder, which will be automatically created during your first download. All you have to do is follow the comments `@edit` and edit accordingly to your computers paths. If you called the parent folder "ml", then some paths are already correct. More information is available inside the notebook. If you followed the procedure correctly you will have the following configuration:
+All you have to do is follow the comments `@edit` and edit accordingly to your computers paths. If you called the parent folder "ml", then some paths are already correct. More information is available inside the notebook. If you followed the procedure correctly you will have the following datasets configuration:
 
 ![folders](images-readme/folders.jpg)
 
-Where only the name of the specific dataset and the name of the folders containing the images will differ based on what you downloaded.
+Only the name of the specific dataset and the name of the folders containing the images will differ based on what you downloaded.
+
+#### Model training
+
+You can check the `model_initializers` dictionary inside the `init_model` function in the `models_init.py` to see all the models implemented, copy and paste the name of the model you want to use, then open the `training-main.py` to set the training up.
+
+Paste in the variable `model_name` what you just copied, then edit the variables `root`, `img_folder` accordingly to your specific system path. Referring to the graph above, `img_folder` should be named as `CUB200-2011` or `Flowers102` etc, lastly `root` should be the system path up until the folder I suggested to you to call `ml`, which is the folder that contains the virtual environment, the datasets and the repository.
+
+After this, edit the files inside the config however you desire, the f-strings will allow for a smoother experience automatically constructing the correct paths for everything that will be tracked during the training.
 
 
 
+Once you have set the training up, you can just run the file from the terminal (remember to have the virtual environment activated).
+
+#### Model testing
+
+The file is extremely similar to the training one, just make sure to choose the correct path to your .pth file.
 
 
-
-
-- Prepare_folders.py is a file where you can find download functions, either for kaggle (remember to have your kaggle.json file located in folder etc) or from a direct download link. We are also creating the train-validation-test folders, and creaitng augmented images. Prima trasformi e poi generi o prima generi e poi trasformi?
-- main.py is the main file where you will need to define the main folder of the dataset you will use this repoository on. You can find the list inside the main.py file (add the exact lines). There is also a list of models we tried, pick the one you desire and set it as model_name. Define the trasformation and its parameters, note that each model has a preferred image size, you can find the optimal image size per model in the init_models.py file. After that, you can choose all hyperparameters and other parameters (ca capire come chiamarli). After this, you can execute the main.py which will initialize the training loop.
-- ? come facciamo a caricare dei pesi?
-- come facciamo a runnare il test loop?
-- da dove faccio partire i check point?
-- aggiustare validation e train loop per implementare i checkpoints e scegliere se usare o meno il validation loop durante la fase di traianing 
-- aggiustare la funzione criterion
-- modificare i checkpoint per salvare la migliore epoca (paragonare train-val loss alla precedente)
-- docstring per le varie funzioni
-- per i transformer, c'è il dsicrimantor, serve un loop diverso?
 
 ## Reference
