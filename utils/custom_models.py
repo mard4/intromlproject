@@ -12,7 +12,7 @@ class SEBlock(nn.Module):
             nn.Linear(in_channels // reduction, in_channels, bias=False),
             nn.Sigmoid()
         )
-        
+
     def forward(self, x):
         b, c, _, _ = x.size()
         y = self.avg_pool(x).view(b, c)
@@ -62,23 +62,36 @@ class SEBottleneck(nn.Module):
 
 
 class SEResNet50(nn.Module):
-    def __init__(self, num_classes=1000):
+    def __init__(self, num_classes=1000, freeze_layers_except_last=False, layers_to_freeze=None):
         super(SEResNet50, self).__init__()
+        self.num_classes = num_classes
+        self.freeze_layers_except_last = freeze_layers_except_last
+        self.layers_to_freeze = layers_to_freeze if layers_to_freeze is not None else []
+        
         resnet = models.resnet50(weights='ResNet50_Weights.DEFAULT')  # Load pre-trained ResNet-50
         self.conv1 = resnet.conv1
         self.bn1 = resnet.bn1
         self.relu = resnet.relu
         self.maxpool = resnet.maxpool
-        
-        # Example of using _make_layer to construct layer1, layer2, layer3, and layer4
-        self.inplanes = 64  # Set initial number of input channels
-        self.layer1 = self._make_layer(SEBottleneck, 64, 3)  # 3 SEBottleneck blocks, 64 output planes
-        self.layer2 = self._make_layer(SEBottleneck, 128, 4, stride=2)  # 4 SEBottleneck blocks, 128 output planes, stride 2
-        self.layer3 = self._make_layer(SEBottleneck, 256, 6, stride=2)  # 6 SEBottleneck blocks, 256 output planes, stride 2
-        self.layer4 = self._make_layer(SEBottleneck, 512, 3, stride=2)  # 3 SEBottleneck blocks, 512 output planes, stride 2
-
+        self.layer1 = resnet.layer1
+        self.layer2 = resnet.layer2
+        self.layer3 = resnet.layer3
+        self.layer4 = resnet.layer4
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(2048, num_classes)  # Modify the fully connected layer to match the number of classes
+
+        print(freeze_layers_except_last)
+        if self.freeze_layers_except_last:
+            self.freeze_model_layers()
+            self.set_last_layer_trainable()
+        elif self.layers_to_freeze:
+            self.freeze_specific_layers()
+        else:
+            print("no freeze")
+
+        self.total_params = sum(p.numel() for p in self.parameters())
+        self.trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        self.frozen_params = self.total_params - self.trainable_params
 
     def forward(self, x):
         x = self.conv1(x)
@@ -93,11 +106,6 @@ class SEResNet50(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.fc(x)
         return x
-    
-    def freeze_layers(self, layers_to_freeze):
-        for name, param in self.named_parameters():
-            if any(layer in name for layer in layers_to_freeze):
-                param.requires_grad = False
 
     def _make_layer(self, block, planes, blocks, stride=1, reduction=8):
         downsample = None
@@ -114,3 +122,83 @@ class SEResNet50(nn.Module):
             layers.append(block(self.inplanes, planes, reduction=reduction))
 
         return nn.Sequential(*layers)
+
+    def freeze_model_layers(self):
+        for param in self.parameters():
+            param.requires_grad = False
+
+    def set_last_layer_trainable(self):
+        for param in self.fc.parameters():
+            param.requires_grad = True
+
+    def freeze_specific_layers(self):
+        for name, param in self.named_parameters():
+            if any(layer_name in name for layer_name in self.layers_to_freeze):
+                param.requires_grad = False
+
+    def get_params_info(self):
+        params_info = {
+            'total_params': self.total_params,
+            'trainable_params': self.trainable_params,
+            'frozen_params': self.frozen_params,
+            # 'layers': []
+        }
+        
+        # for name, param in self.named_parameters():
+        #     params_info['layers'].append({
+        #         'name': name,
+        #         'requires_grad': param.requires_grad,
+        #         'num_params': param.numel()
+        #     })
+        
+        return params_info
+
+
+class ViT(nn.Module):
+    def __init__(self, num_classes=1000, freeze_layers_except_last=False, layers_to_freeze=None):
+        super(ViT, self).__init__()
+        self.model_name = 'vit_base_patch16_224'
+        self.num_classes = num_classes
+        self.freeze_layers_except_last = freeze_layers_except_last
+        self.layers_to_freeze = layers_to_freeze if layers_to_freeze is not None else []
+        self.model = timm.create_model(self.model_name, pretrained=True)
+        
+        if self.freeze_layers_except_last:
+            self.freeze_model_layers()
+            self.set_last_layer_trainable()
+        elif self.layers_to_freeze:
+            self.freeze_specific_layers()
+
+        self.total_params = sum(p.numel() for p in self.model.parameters())
+        self.trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+        self.frozen_params = self.total_params - self.trainable_params
+
+        # Define the last layer for classification
+        self.model.head = nn.Linear(self.model.head.in_features, self.num_classes)
+
+    def freeze_model_layers(self):
+        for param in self.model.parameters():
+            param.requires_grad = False
+
+    def set_last_layer_trainable(self):
+        for param in self.model.head.parameters():
+            param.requires_grad = True
+
+    def freeze_specific_layers(self):
+        for name, param in self.model.named_parameters():
+            if any(layer_name in name for layer_name in self.layers_to_freeze):
+                param.requires_grad = False
+
+    def get_params_info(self):
+        params_info = {
+            'total_params': self.total_params,
+            'trainable_params': self.trainable_params,
+            'frozen_params': self.frozen_params,
+        }
+        
+        return params_info
+    
+    def forward(self, x):
+        # Pass input through the pre-trained model
+        x = self.model(x)
+        return x

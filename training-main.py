@@ -29,16 +29,16 @@ Mean, Std, number of classes for Datasets:
 """
 
 root = '/home/disi/ml'
-img_folder = 'aerei'
-model_name = 'densenet201'
+img_folder = 'air'
+model_name = 'seresnet50'
 
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
     'dataset_name': f"{img_folder}",  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
-    'checkpoint': f'{root}/checkpoints/densenet201/densenet201_aerei_epoch10.pth',  # Path to a checkpoint file to resume training
+    'checkpoint': None, #f'{root}/checkpoints/densenet201/densenet201_aerei_epoch10.pth',  # Path to a checkpoint file to resume training
     'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
-    'project_name': f'{model_name}_test',  # Weights and Biases project name
+    'project_name': f'{model_name}_prova',  # Weights and Biases project name
     
     # Image transformation 
     'image_size': 224,  # Size of the input images (default: 224)
@@ -48,18 +48,18 @@ config = {
 
     # Training loop
     'model_name': f'{model_name}',  # Name of the model to use
-    'batch_size': 32,  # Batch size (default: 32)
-    'epochs': 30,  # Number of epochs to train (default: 10)
+    'batch_size': 64,  # Batch size (default: 32)
+    'epochs': 10,  # Number of epochs to train (default: 10)
     'optimizer': 'Adam',  # Optimizer to use (default: Adam)
     'optimizer_type': 'custom',  # Type of optimizer to use (default: simple)
-    'learning_rate': 0.001,  # Learning rate (default: 0.001)
-    'weight_decay': 0,  # Weight decay for optimizer (default: 0)
+    'learning_rate': 0.0001,  # Learning rate (default: 0.001)
+    'weight_decay': 0.0001,  # Weight decay for optimizer (default: 0)
     'momentum': 0,  # Momentum for optimizer (default: 0)
     'criterion': 'CrossEntropyLoss',  # Criterion for the loss function (default: CrossEntropyLoss)
     'dropout': 0.5,
     'scheduler': True,
     'step_size': 5,
-    'patience': 5,
+    'patience': 3,
 
     # Parameter groups for custom optimizer
     'param_groups': [

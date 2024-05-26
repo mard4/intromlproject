@@ -31,7 +31,11 @@ def init_model(model_name, num_classes):
         "densenet201": initialize_densenet201,
         'efficientnetv2': initialize_efficientnetv2,
         "efficientnetv2_freeze": initialize_efficientnetv2_freeze,
-        "seresnet50": initialize_SENet 
+        "seresnet50": initialize_SENet,
+        "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block,
+        "seresnet50_freeze": initialize_SENet_freeze_except_last,
+        "vit": initialize_ViT,
+        "vit_freeze": initialize_ViT_freeze_except_last
         # add here new models
     }
     
@@ -309,8 +313,7 @@ def initialize_SENet(num_classes):
     model = SEResNet50(num_classes)
     return model
 
-
-def initialize_SENet_freeze(num_classes):
+def initialize_SENet_freeze_except_last(num_classes):
     """
     Load the pre-trained SEResNet50 model with ImageNet weights
     and replace the classifier with a new one for fine-tuning.
@@ -322,8 +325,20 @@ def initialize_SENet_freeze(num_classes):
     Returns:
         torch.nn.Module: The SEResNet50 model with the modified classifier.
     """
-    model = SEResNet50(num_classes)
+    model = SEResNet50(num_classes, freeze_layers_except_last = True)
     
-    model.freeze_layers(['conv1', 'bn1', 'layer1', 'layer2', 'layer3'])
-    
-    return model   
+    return model
+
+def initialize_ViT(num_classes):
+    '''
+    Load the pre-trained ViT model with ImageNet weights
+    '''
+    model = ViT(num_classes)
+    return model
+
+def initialize_ViT_freeze_except_last(num_classes):
+    '''
+    Load the pre-trained ViT model with ImageNet weights
+    '''
+    model = ViT(num_classes, freeze_layers_except_last = True)
+    return model
