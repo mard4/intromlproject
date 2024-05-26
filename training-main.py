@@ -36,8 +36,9 @@ config = {
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
     'dataset_name' : f"{img_folder}", # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
     # leave checkpoint = None if you don't have one
-    'checkpoint':  None,#f'{root}/checkpoints/efficientnetv2/efficientnetv2_aircraft_epoch10.pth', # Path to a checkpoint file to resume training
-    'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
+    'checkpoint': None,#f'{root}/checkpoints/alexnet/alexnet_aerei_epoch2.pth',  # Path to a checkpoint file to resume training
+    'save_dir': f'{root}/checkpoints/{model_name}_{img_folder}',  # Directory to save logs and model checkpoints
+    
     'project_name': f'{model_name}_test',  # Weights and Biases project name
     
     # Image transformation 
@@ -59,7 +60,7 @@ config = {
     'dropout': 0.5,
     'scheduler': True,
     'step_size': 5,
-    'patience': 5,
+    'patience': 3,
 
     # Parameter groups for custom optimizer
     'param_groups': [
@@ -89,7 +90,6 @@ def main(config):
     
     logger.info(f"Configurations: {config}")
 
-
     # Define the optimizer
     if config['optimizer_type'] == 'custom':
         optimizer = custom_optimizer(
@@ -99,14 +99,22 @@ def main(config):
             param_groups=config['param_groups'], 
             optim=torch.optim.Adam
         )
-        print("Optimizer custom set succesfully")
+        print("Optimizer custom set successfully")
     else:
-        optimizer = getattr(torch.optim, config['optimizer'])(
-            model.parameters(), 
-            lr=config['learning_rate'], 
-            weight_decay=config['weight_decay'], 
-            momentum=config['momentum']
-        )
+        # Dynamically create a dictionary of arguments based on the optimizer type
+        optimizer_args = {
+            "params": model.parameters(),
+            "lr": config['learning_rate'],
+            "weight_decay": config['weight_decay']
+        }
+        
+        # Add 'momentum' only if the optimizer supports it (e.g., not for Adam)
+        if 'momentum' in config and config['optimizer'] not in ['Adam', 'AdamW']:
+            optimizer_args['momentum'] = config['momentum']
+        
+        # Create the optimizer using the config and the dynamically created arguments
+        optimizer = getattr(torch.optim, config['optimizer'])(**optimizer_args)
+
 
     # Define the loss function
     criterion = getattr(torch.nn, config['criterion'])()

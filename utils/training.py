@@ -47,7 +47,7 @@ def train_one_epoch(model, train_loader, val_loader, optimizer, cost_function, e
 
         samples += inputs.size(0)
         cumulative_loss += loss.item() * inputs.size(0)
-        _, predicted = outputs.max(1)
+        _, predicted = torch.max(outputs.data, 1)
         cumulative_accuracy += predicted.eq(targets).sum().item()
 
     train_loss = cumulative_loss / samples
@@ -115,7 +115,8 @@ def validate(model, val_loader, cost_function, device="cuda", epoch=None):
 
         samples += inputs.size(0)
         cumulative_loss += loss.item() * inputs.size(0)
-        _, predicted = outputs.max(1)
+        _, predicted = torch.max(outputs.data, 1)
+
         cumulative_accuracy += predicted.eq(targets).sum().item()
 
     val_loss = cumulative_loss / samples
