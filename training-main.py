@@ -30,7 +30,7 @@ Mean, Std, number of classes for Datasets:
 
 root = '/home/disi/ml'
 img_folder = 'fiori'
-model_name = 'efficientnetv2'
+model_name = 'initialize_densenet201_freeze_1st'
 config = {
     # Path and directory stuff
     'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
@@ -49,9 +49,9 @@ config = {
 
     # Training loop
     'model_name': f'{model_name}',  # Name of the model to use
-    'batch_size': 16,  # Batch size (default: 32)
-    'epochs': 10,  # Number of epochs to train (default: 10)
-    'optimizer': 'SGD',  # Optimizer to use (default: Adam) or SGD
+    'batch_size': 32,  # Batch size (default: 32)
+    'epochs': 40,  # Number of epochs to train (default: 10)
+    'optimizer': 'Adam',  # Optimizer to use (default: Adam) or SGD
     'optimizer_type': 'simple',  # Type of optimizer to use (default: simple)
     'learning_rate': 0.001,  # Learning rate (default: 0.001)
     'weight_decay': 0.1,  # Weight decay for optimizer (default: 0)
@@ -90,9 +90,6 @@ def main(config):
     
     logger.info(f"Configurations: {config}")
 
-
-
-
     # Define the optimizer
     if config['optimizer_type'] == 'custom':
         optimizer = custom_optimizer(
@@ -102,14 +99,22 @@ def main(config):
             param_groups=config['param_groups'], 
             optim=torch.optim.Adam
         )
-        print("Optimizer custom set succesfully")
+        print("Optimizer custom set successfully")
     else:
-        optimizer = getattr(torch.optim, config['optimizer'])(
-            model.parameters(), 
-            lr=config['learning_rate'], 
-            weight_decay=config['weight_decay'], 
-            momentum=config['momentum']
-        )
+        # Dynamically create a dictionary of arguments based on the optimizer type
+        optimizer_args = {
+            "params": model.parameters(),
+            "lr": config['learning_rate'],
+            "weight_decay": config['weight_decay']
+        }
+        
+        # Add 'momentum' only if the optimizer supports it (e.g., not for Adam)
+        if 'momentum' in config and config['optimizer'] not in ['Adam', 'AdamW']:
+            optimizer_args['momentum'] = config['momentum']
+        
+        # Create the optimizer using the config and the dynamically created arguments
+        optimizer = getattr(torch.optim, config['optimizer'])(**optimizer_args)
+
 
     # Define the loss function
     criterion = getattr(torch.nn, config['criterion'])()
