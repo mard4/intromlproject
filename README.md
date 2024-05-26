@@ -33,8 +33,21 @@ Fine-Grained Image Classification is a task in computer vision where the goal is
   </div>
 </div>
 
-Create a folder (I suggest you to call it <b>"ml"</b> to avoid editing more paths), navigate inside it and clone the repository. Create a virtual environment, activate it  `source .venv/bin/activate `, then run `pip install -r requirements.txt `.
+Create a folder (I suggest you to call it <b>"ml"</b> to avoid editing more paths), navigate inside it and clone the repository:
+```
+mkdir ml
+cd ml
+git clone https://github.com/lorenzochicco99/intromlproject/
+```
 
+Create a virtual environment, activate it with:
+```
+source .venv/bin/activate
+```
+then run:
+```
+pip install -r requirements.txt
+```
 Note that you should also have an nvidia gpu and cuda drivers installed, otherwhise the models will be loaded in cpu and will be much slower and prone to crashes.
 
 ## Structure
@@ -45,37 +58,37 @@ The starting configuration will look something like this:
 
 - intromlproject
   
-  - requirements.txt
+  - `requirements.txt`
   
-  - data_setupper.ipynb $\to$ notebook used to download and prepare data
+  - `data_setupper.ipynb` $\to$ notebook used to download and prepare data
   
-  - training-main.py $\to$ python script that trains and validates the chosen model
+  - `training-main.py` $\to$ python script that trains and validates the chosen model
   
-  - testing-main.py $\to$ python script that tests the provided model.
+  - `testing-main.py` $\to$ python script that tests the provided model.
   
-  - testing-main-exam.py $\to$ python script that tests a model and 
+  - `testing-main-exam.py` $\to$ python script that tests a model and 
   
   - utils/
     
-    - augmentation.py $\to$ contains functions for data augmentation.
+    - `augmentation.py` $\to$ contains functions for data augmentation.
     
-    - custom_models.py $\to$ contains functions to built models from scratch.
+    - `custom_models.py` $\to$ contains functions to built models from scratch.
     
-    - downloader.py $\to$ contains functions to download data from different sources.
+    - `downloader.py` $\to$ contains functions to download data from different sources.
     
-    - extractors.py $\to$ contains functions to extract different archived files
+    - `extractors.py` $\to$ contains functions to extract different archived files
     
-    - logger.py $\to$ contains a function which initializes the logger.
+    - `logger.py` $\to$ contains a function which initializes the logger.
     
-    - models_init.py $\to$ contains functions to initialize models from already existing libraries.
+    - `models_init.py` $\to$ contains functions to initialize models from already existing libraries.
     
-    - optimizers.py $\to$ contains a function to implement a custom optimizer. #todo
+    - `optimizers.py` $\to$ contains a function to implement a custom optimizer. #todo
     
-    - testing.py $\to$ contains the function to test a model and send files to the competition server.
+    - `testing.py` $\to$ contains the function to test a model and send files to the competition server.
     
-    - training.py $\to$ contains the functions to train and validate the model for a single epoch. 
+    - `training.py` $\to$ contains the functions to train and validate the model for a single epoch. 
     
-    - testing.py $\to$ contains the function to test a model storing the predictions in a dictionary and submits it to a server.
+    - `testing.py` $\to$ contains the function to test a model storing the predictions in a dictionary and submits it to a server.
 
 ## Usage
 
@@ -104,8 +117,6 @@ Paste in the variable `model_name` what you just copied, then edit the variables
 After this, edit the files inside the config however you desire, the f-strings will allow for a smoother experience automatically constructing the correct paths for everything that will be tracked during the training.
 
 Once you have set the training up, you can just run the file from the terminal (remember to have the virtual environment activated).
-
-
 
 After you trained your model, there will be a new folder which will contain the weights saved as a .pth file. If you wish to keep training the model, you can just edit the `training-main.py` file adding the checkpoint instead of leaving it to None. You can keep repeating this until you are satisfied with your results.
 
