@@ -32,7 +32,8 @@ def init_model(model_name, num_classes):
         'efficientnetv2': initialize_efficientnetv2,
         'vit_base_patch16_224': initialize_vit_base_patch16_224,
         "efficientnetv2_freeze": initialize_efficientnetv2_freeze,
-        "seresnet50": initialize_SENet 
+        "seresnet50": initialize_SENet,
+        "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block
         # add here new models
     }
     
@@ -216,6 +217,33 @@ def initialize_densenet201(num_classes):
     """
     model = torchvision.models.densenet201(pretrained=True)
     model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    return model
+
+
+import torchvision.models as models
+import torch.nn as nn
+
+def initialize_densenet201_freeze_1st_block(num_classes, freeze_first_n_blocks=1):
+    # Load the pre-trained DenseNet-201 model
+    model = models.densenet201(pretrained=True)
+    
+    # Accessing features of the DenseNet
+    features = model.features
+    
+    # Freeze the specified number of dense blocks
+    block_count = 0
+    for child in features.children():
+        if isinstance(child, nn.Sequential):  # Each dense block is a Sequential module
+            block_count += 1
+            if block_count <= freeze_first_n_blocks:
+                for param in child.parameters():
+                    param.requires_grad = False
+            else:
+                break
+
+    # Replacing the classifier with a new one for the given number of classes
+    model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    
     return model
 
 def load_checkpoint(model, checkpoint_path, device="cuda"):
