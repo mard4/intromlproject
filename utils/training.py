@@ -48,7 +48,6 @@ def train_one_epoch(model, train_loader, val_loader, optimizer, cost_function, e
         samples += inputs.size(0)
         cumulative_loss += loss.item() * inputs.size(0)
         _, predicted = torch.max(outputs.data, 1)
-        print(predicted)
         cumulative_accuracy += predicted.eq(targets).sum().item()
 
     train_loss = cumulative_loss / samples
