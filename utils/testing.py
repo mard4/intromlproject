@@ -5,21 +5,6 @@ from http.client import responses
 import requests
 import json
 
-"""
-Image Sizes:
-    - AlexNet: 224x224
-    - DenseNet: 224x224
-    - Inception: 299x299
-    - ResNet: 224x224
-    - VGG: 224x224
-
-Mean, Std, number of classes for Datasets:
-    - CUB-200-2011: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=200
-    - Stanford Dogs: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=120
-    - FGVC Aircraft: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
-    - Flowers102: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
-"""
-
 def test_model_exam(net, test_loader, cost_function, device="cuda"):
     """
     Test the model on the test dataset, log the results, and submit them to a competition server.
