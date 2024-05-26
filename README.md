@@ -14,19 +14,24 @@
 
 This project has been tested on an azure machine running ubuntu.
 
-![](/home/lorenzo/snap/marktext/9/.config/marktext/images/2024-05-26-12-05-00-image.png)
-
+![Example Image](images-readme/neofetch.png)
 Create a folder (I suggest you to call it "ml" to avoid editing more paths), navigate inside it and clone the repository. Create a virtual environment, activate it, then run `pip install -r requirements.txt `
 
 Note that you should also have an nvidia gpu and cuda drivers installed, otherwhise the models will be loaded in cpu and will be much slower and prone to crashes.
 
-## Folders
+## Structure
 
 The starting configuration will look something like this:
 
 - virtualenvironment
 - intromlproject
   - requirements.txt
+  
+  - data_setupper.ipynb (notebook used to download and prepare data)
+  
+  - training-main.py (python script that trains and validates the chosen model)
+  
+  - testing-main.py (python script that tests the provided model)
   
   utils
   
@@ -52,7 +57,7 @@ main folder -> train,test,val -> classes -> images
 
 Navigate inside the repository, then you can use the `data_setupper.ipynb` notebook to download any dataset of your choosing. We decided to use a notebook instead of a .py file is because the datasets we tried came from different sources (kaggle, torch, generic websites) and we wanted to have the flexibility to just download them and store them inside a datasets folder, which will be automatically created during your first download. All you have to do is follow the comments `@edit` and edit accordingly to your computers paths. If you called the parent folder "ml", then some paths are already correct. More information is available inside the notebook. If you followed the procedure correctly you will have the following configuration:
 
-![](/home/lorenzo/snap/marktext/9/.config/marktext/images/2024-05-26-12-51-11-folder_organization.jpg)
+![folders](images-readme/folders.jpg)
 
 Where only the name of the specific dataset and the name of the folders containing the images will differ based on what you downloaded.
 
