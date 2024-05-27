@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import wandb
-
+import yaml
 from utils.logger import setup_logger
 from utils.models_init import init_model, load_checkpoint
 from utils.training import validate
@@ -23,38 +23,18 @@ Mean, Std, number of classes for Datasets:
     - Flowers102: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
 """
 
-root = '/home/disi/ml'
-img_folder = 'fiori'
-model_name = 'efficientnetv2'
-checkpoint_pth = f'efficientnetv2_fiori_epoch10.pth'
+#configuration file
+with open('intromlproject/config.yaml', 'r') as file:
+    config = yaml.safe_load(file)
+config = config['config']
+config['data_dir'] = config['data_dir'].format(root=config['root'], img_folder=config['img_folder'])
+config['checkpoint'] = config['checkpoint'].format(root=config['root'])
+config['save_dir'] = config['save_dir'].format(root=config['root'], model_name=config['model_name'], img_folder=config['img_folder'])
+config['device'] = "cuda" if torch.cuda.is_available() else "cpu"
+config['project_name'] = config['project_name'].format(model_name=config['model_name'])
+config['dataset_name'] = config['dataset_name'].format(img_folder=config['img_folder'])
 
-# Configuration
-config = {
-    # Path and directory stuff
-    'data_dir': f'{root}/datasets/{img_folder}',  # Directory containing the dataset
-    'dataset_name': f'{img_folder}',  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
-    'checkpoint': f'{root}/checkpoints/{model_name}_{img_folder}/{checkpoint_pth}',  # Path to a checkpoint file to load
-    'save_dir': f'{root}/checkpoints/{model_name}',  # Directory to save logs and model checkpoints
-    'project_name': f'{model_name}_test',  # Weights and Biases project name
-    
-    # Image transformation 
-    'image_size': 224,  # Size of the input images (default: 224)
-    'num_classes': 102,  # Number of classes in the dataset
-    'mean': [0.485, 0.456, 0.406],  # Mean for normalization
-    'std': [0.229, 0.224, 0.225],  # Standard deviation for normalization
-
-    # Testing loop
-    'model_name': f'{model_name}',  # Name of the model to use
-    'batch_size': 16,  # Batch size (default: 32)
-    'criterion': 'CrossEntropyLoss',  # Criterion for the loss function (default: CrossEntropyLoss)
-
-    # Irrelevant
-    'device': 'cuda' if torch.cuda.is_available() else 'cpu'  # Device to use for testing
-
-
-## non modificare ua sotto
-
-}
+###################### DO NOT EDIT #################
 def main(config):
     """
     This script evaluates a trained model on the test dataset and logs the results.
