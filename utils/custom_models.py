@@ -1,6 +1,6 @@
 import torch.nn as nn
 from torchvision import models
-
+import timm
 
 class SEBlock(nn.Module):
     def __init__(self, in_channels, reduction=16):
