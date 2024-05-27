@@ -18,7 +18,8 @@ with open('intromlproject/config.yaml', 'r') as file:
 config = config['config']
 config['data_dir'] = config['data_dir'].format(root=config['root'], img_folder=config['img_folder'])
 config['save_dir'] = config['save_dir'].format(root=config['root'], model_name=config['model_name'], img_folder=config['img_folder'])
-config['checkpoint'] = config['checkpoint'].format(root=config['root'])
+if config['checkpoint'] is not None:
+    config['checkpoint'] = config['checkpoint'].format(root=config['root'])
 config['device'] = "cuda" if torch.cuda.is_available() else "cpu"
 config['project_name'] = config['project_name'].format(model_name=config['model_name'])
 config['dataset_name'] = config['dataset_name'].format(img_folder=config['img_folder'])
@@ -28,7 +29,8 @@ config['dataset_name'] = config['dataset_name'].format(img_folder=config['img_fo
 def main(config):
     # Initialize wandb
     wandb.init(project=config['project_name'],
-               name=f"{config['model_name']}_{config['dataset_name']}_opt: {config['optimizer']}_batch_size: {config['batch_size']}_lr: {config['learning_rate']}",
+               name = config['dataset_name'],
+               #name=f"{config['model_name']}_{config['dataset_name']}_opt: {config['optimizer']}_batch_size: {config['batch_size']}_lr: {config['learning_rate']}",
                config=config)
 
     # Setup logger

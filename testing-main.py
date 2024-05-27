@@ -8,27 +8,13 @@ from utils.logger import setup_logger
 from utils.models_init import init_model, load_checkpoint
 from utils.training import validate
 
-"""
-Image Sizes:
-    - AlexNet: 224x224
-    - DenseNet: 224x224
-    - Inception: 299x299
-    - ResNet: 224x224
-    - VGG: 224x224
-
-Mean, Std, number of classes for Datasets:
-    - CUB-200-2011: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=200
-    - Stanford Dogs: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=120
-    - FGVC Aircraft: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
-    - Flowers102: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
-"""
-
 #configuration file
 with open('intromlproject/config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 config = config['config']
 config['data_dir'] = config['data_dir'].format(root=config['root'], img_folder=config['img_folder'])
-config['checkpoint'] = config['checkpoint'].format(root=config['root'])
+if config['checkpoint'] is not None:
+    config['checkpoint'] = config['checkpoint'].format(root=config['root'])
 config['save_dir'] = config['save_dir'].format(root=config['root'], model_name=config['model_name'], img_folder=config['img_folder'])
 config['device'] = "cuda" if torch.cuda.is_available() else "cpu"
 config['project_name'] = config['project_name'].format(model_name=config['model_name'])
