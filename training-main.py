@@ -13,6 +13,7 @@ from utils.custom_models import *
 
 # Configuration
 
+
 """
 Image Sizes:
     - AlexNet: 224x224
