@@ -1,13 +1,12 @@
 import os
 import torch
 import logging
-from torch.nn import Dropout
 from torch.optim.lr_scheduler import StepLR
 import time
 from tqdm import tqdm
 import wandb
 
-def train_one_epoch(model, train_loader, val_loader, optimizer, cost_function, epoch, model_name, dataset_name, save_dir, scheduler = None, dropout = None, device="cuda"):
+def train_one_epoch(model, train_loader, val_loader, optimizer, cost_function, epoch, model_name, dataset_name, save_dir, scheduler = None, device="cuda"):
     """
     Train and validate the model for one epoch, update the logs, and save the model weights.
 
@@ -22,7 +21,6 @@ def train_one_epoch(model, train_loader, val_loader, optimizer, cost_function, e
         dataset_name (str): The name of the dataset.
         save_dir (str): Directory to save the logs and model weights.
         scheduler (torch.optim.lr_scheduler, optional): The learning rate scheduler.
-        dropout (torch.nn.Module): The dropout layer.
         device (str): The device to run the training on (default is "cuda").
 
     Returns:
@@ -39,8 +37,7 @@ def train_one_epoch(model, train_loader, val_loader, optimizer, cost_function, e
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
-        if dropout is not None:
-            outputs = dropout(outputs)
+
         loss = cost_function(outputs, targets)
         loss.backward()
         optimizer.step()
