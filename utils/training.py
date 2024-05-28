@@ -104,6 +104,7 @@ def validate(model, val_loader, cost_function, device="cuda", epoch=None):
     cumulative_loss = 0.0
     cumulative_accuracy = 0.0
 
+    
     # Use tqdm to visualize the validation progress
     for inputs, targets in tqdm(val_loader, desc=f"Epoch {epoch} - Validation" if epoch else "Validation"):
         inputs, targets = inputs.to(device), targets.to(device)
