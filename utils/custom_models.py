@@ -1,5 +1,6 @@
 import torch.nn as nn
 from torchvision import models
+import timm
 
 
 class SEBlock(nn.Module):
