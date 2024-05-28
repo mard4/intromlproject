@@ -33,14 +33,10 @@ def init_model(model_name, num_classes):
         'vit_base_patch16_224': initialize_vit_base_patch16_224,
         "efficientnetv2_freeze": initialize_efficientnetv2_freeze,
         "seresnet50": initialize_SENet,
-<<<<<<< HEAD
         "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block,
         "seresnet50_freeze": initialize_SENet_freeze_except_last,
         "vit": initialize_ViT,
         "vit_freeze": initialize_ViT_freeze_except_last
-=======
-        "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block
->>>>>>> 6a05d1390997a5d82224d117e7e9e1838683f6b7
         # add here new models
     }
     
@@ -325,9 +321,9 @@ def initialize_vit_base_patch16_224(num_classes):
     # else:
     #     optimizer = optim.Adam(model.parameters(), lr=1e-4)
     return model
-    model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    # model.classifier = nn.Linear(model.classifier.in_features, num_classes)
     
-    return model
+    # return model
 
 def initialize_efficientnetv2_freeze(num_classes):
     """
@@ -378,7 +374,7 @@ def initialize_SENet(num_classes):
     Returns:
         torch.nn.Module: The SEResNet50 model with the modified classifier.
     """
-    model = SEResNet50(num_classes)
+    model = ResNet(ResidualBlock, [3, 4, 6, 3], num_classes)
     return model
 
 def initialize_SENet_freeze_except_last(num_classes):
@@ -395,7 +391,6 @@ def initialize_SENet_freeze_except_last(num_classes):
     """
     model = SEResNet50(num_classes, freeze_layers_except_last = True)
     
-<<<<<<< HEAD
     return model
 
 def initialize_ViT(num_classes):
@@ -411,8 +406,3 @@ def initialize_ViT_freeze_except_last(num_classes):
     '''
     model = ViT(num_classes, freeze_layers_except_last = True)
     return model
-=======
-    model.freeze_layers(['conv1', 'bn1', 'layer1', 'layer2', 'layer3'])
-    
-    return model   
->>>>>>> 6a05d1390997a5d82224d117e7e9e1838683f6b7
