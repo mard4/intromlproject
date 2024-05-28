@@ -1,0 +1,47 @@
+config:
+  root: "/home/disi/ml"
+  img_folder: "aircraft"
+  model_name: "vit_freeze"
+  # Path and directory stuff
+  data_dir: "{root}/datasets/{img_folder}"  # Directory containing the dataset
+  dataset_name: "{img_folder}"  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
+
+
+  # !!! leave checkpoint as null if you don't have one
+  checkpoint:  null #'{root}/checkpoints/efficientnetv2_aircraft/efficientnetv2_aircraft_epoch6.pth'  # Path to a checkpoint file to resume training or to test a model (set null if not needed)
+  save_dir: "{root}/checkpoints/{model_name}_{img_folder}"  # Directory to save logs and model checkpoints
+  project_name: '{model_name}_test'  # Weights and Biases project name
+  # Image transformation
+  image_size: 224  # Size of the input images (default: 224)
+  mean: [0.485, 0.456, 0.406]  # Mean for normalization
+  std: [0.229, 0.224, 0.225]  # Standard deviation for normalization
+
+  # Training loop
+  batch_size: 42  # Batch size (default: 32)
+  epochs: 10  # Number of epochs to train (default: 10)
+  optimizer: "SGD"  # Optimizer to use (default: Adam) or SGD
+  optimizer_type: "simple"  # Type of optimizer to use simple or custom (default: simple)
+  learning_rate: 0.01  # Learning rate (default: 0.001)
+  weight_decay: 0.1  # Weight decay for optimizer (default: 0)
+  momentum: 0.2  # Momentum for optimizer (default: 0)
+  criterion: "CrossEntropyLoss"  # Criterion for the loss function (default: CrossEntropyLoss)
+  scheduler: true
+  step_size: 10
+  patience: 5
+  device: "cuda" #if torch.cuda.is_available() else "cpu"  # Device to use for training
+
+
+# Image Sizes:
+#     - AlexNet: 224x224
+#     - DenseNet: 224x224
+#     - Inception: 299x299
+#     - ResNet: 224x224
+#     - VGG: 224x224
+
+# Mean, Std, number of classes for Datasets:
+#     - CUB-200-2011: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=200
+#     - Stanford Dogs: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=120
+#     - FGVC Aircraft: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=
+#     - Flowers102: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], classes=102
+
+
