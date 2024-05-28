@@ -12,7 +12,7 @@ from utils.optimizers import *
 from utils.custom_models import *
 
 #configuration file
-with open('intromlproject/config.yaml', 'r') as file:
+with open('./config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 config = config['config']
@@ -36,8 +36,23 @@ def main(config):
     # Setup logger
     logger = setup_logger(log_dir=config['save_dir'])
 
+    # Define data transformations
+    transform = transforms.Compose([
+        transforms.Resize((config['image_size'], config['image_size'])),
+        transforms.RandomCrop(config['image_size']),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=config['mean'], std=config['std'])
+    ])
+
+    # Load datasets
+    train_dataset = datasets.ImageFolder(root=os.path.join(config['data_dir'], 'train'), transform=transform)
+    val_dataset = datasets.ImageFolder(root=os.path.join(config['data_dir'], 'val'), transform=transform)
+    train_loader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True, num_workers=4)
+    val_loader = DataLoader(val_dataset, batch_size=config['batch_size'], shuffle=False, num_workers=4)
+    
+    num_classes = len(train_loader.dataset.classes)
     # Initialize the model
-    model = init_model(config['model_name'], config['num_classes'])
+    model = init_model(config['model_name'],num_classes)
     model.to(config['device'])
     
     logger.info(f"Configurations: {config}")
@@ -52,20 +67,6 @@ def main(config):
         scheduler = StepLR(optimizer, step_size=config['step_size'], gamma=0.1)
     else:
         scheduler = None
-
-    # Define data transformations
-    transform = transforms.Compose([
-        transforms.Resize((config['image_size'], config['image_size'])),
-        transforms.RandomCrop(config['image_size']),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=config['mean'], std=config['std'])
-    ])
-
-    # Load datasets
-    train_dataset = datasets.ImageFolder(root=os.path.join(config['data_dir'], 'train'), transform=transform)
-    val_dataset = datasets.ImageFolder(root=os.path.join(config['data_dir'], 'val'), transform=transform)
-    train_loader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True, num_workers=4)
-    val_loader = DataLoader(val_dataset, batch_size=config['batch_size'], shuffle=False, num_workers=4)
 
     # Load checkpoint if specified
     if config['checkpoint']:
