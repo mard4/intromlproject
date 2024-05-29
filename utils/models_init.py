@@ -374,7 +374,8 @@ def initialize_SENet(num_classes):
     Returns:
         torch.nn.Module: The SEResNet50 model with the modified classifier.
     """
-    model = ResNet(ResidualBlock, [3, 4, 6, 3], num_classes)
+    model = SEResNet50(num_classes)
+    # model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes)
     return model
 
 def initialize_SENet_freeze_except_last(num_classes):

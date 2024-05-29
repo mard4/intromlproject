@@ -12,13 +12,14 @@ from utils.optimizers import *
 from utils.custom_models import *
 
 #configuration file
-with open('intromlproject/config.yaml', 'r') as file:
+with open('./config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 config = config['config']
 config['data_dir'] = config['data_dir'].format(root=config['root'], img_folder=config['img_folder'])
 config['save_dir'] = config['save_dir'].format(root=config['root'], model_name=config['model_name'], img_folder=config['img_folder'])
-config['checkpoint'] = config['checkpoint'].format(root=config['root'])
+if config['checkpoint'] is not None:
+    config['checkpoint'] = config['checkpoint'].format(root=config['root'])
 config['device'] = "cuda" if torch.cuda.is_available() else "cpu"
 config['project_name'] = config['project_name'].format(model_name=config['model_name'])
 config['dataset_name'] = config['dataset_name'].format(img_folder=config['img_folder'])
@@ -28,28 +29,12 @@ config['dataset_name'] = config['dataset_name'].format(img_folder=config['img_fo
 def main(config):
     # Initialize wandb
     wandb.init(project=config['project_name'],
-               name=f"{config['model_name']}_{config['dataset_name']}_opt: {config['optimizer']}_batch_size: {config['batch_size']}_lr: {config['learning_rate']}",
+               name = config['dataset_name'],
+               #name=f"{config['model_name']}_{config['dataset_name']}_opt: {config['optimizer']}_batch_size: {config['batch_size']}_lr: {config['learning_rate']}",
                config=config)
 
     # Setup logger
     logger = setup_logger(log_dir=config['save_dir'])
-
-    # Initialize the model
-    model = init_model(config['model_name'], config['num_classes'])
-    model.to(config['device'])
-    
-    logger.info(f"Configurations: {config}")
-    
-    optimizer = create_optimizer(model, config)
-
-    # Define the loss function
-    criterion = getattr(torch.nn, config['criterion'])()
-
-    # Define the learning rate scheduler
-    if config['scheduler'] == True:
-        scheduler = StepLR(optimizer, step_size=config['step_size'], gamma=0.1)
-    else:
-        scheduler = None
 
     # Define data transformations
     transform = transforms.Compose([
@@ -64,6 +49,24 @@ def main(config):
     val_dataset = datasets.ImageFolder(root=os.path.join(config['data_dir'], 'val'), transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True, num_workers=4)
     val_loader = DataLoader(val_dataset, batch_size=config['batch_size'], shuffle=False, num_workers=4)
+    
+    num_classes = len(train_loader.dataset.classes)
+    # Initialize the model
+    model = init_model(config['model_name'],num_classes)
+    model.to(config['device'])
+    
+    logger.info(f"Configurations: {config}")
+    
+    optimizer = create_optimizer(model, config)
+
+    # Define the loss function
+    criterion = getattr(torch.nn, config['criterion'])()
+
+    # Define the learning rate scheduler
+    if config['scheduler'] == True:
+        scheduler = StepLR(optimizer, step_size=config['step_size'], gamma=0.1)
+    else:
+        scheduler = None
 
     # Load checkpoint if specified
     if config['checkpoint']:
