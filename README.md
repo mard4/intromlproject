@@ -1,11 +1,17 @@
 # Project on Fine-Grained Image Classification
 
 <div id="header" align="center">
-  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="80"/>
+  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="60"/>
 </div>
+
 This project is part of a Machine Learning course at the University of Trento.
 Fine-Grained Image Classification is a task in computer vision where the goal is to classify images into subcategories within a larger category. For example, classifying different species of birds or different types of flowers. This task is considered to be fine-grained because it requires the model to distinguish between subtle differences in visual appearance and patterns, making it more challenging than regular image classification tasks. 
+<div id="header" align="center">
+  <img src="images-readme/Screenshot 2024-05-29 003000.png" width="800" />
+</div>
 
+<br>
+<hr>
 <div style="text-align: center;"align="center">
   <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original.svg" title="Python" alt="Python" width="40" height="40"/>
   <img src="https://github.com/devicons/devicon/blob/master/icons/git/git-original-wordmark.svg" title="Git" alt="Git" width="40" height="40"/>&nbsp;
