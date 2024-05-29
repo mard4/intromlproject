@@ -338,7 +338,7 @@ def initialize_efficientnetv2_freeze(num_classes):
         torch.nn.Module: The EfficientNetV2S  model with the modified classifier.
     """
     
-    model = torchvision.models.efficientnet_v2_s(pretrained=True)
+    model = torchvision.models.efficientnet_v2_s(weights=torchvision.models.EfficientNet_V2_S_Weights.IMAGENET1K_V1)
     
     # Freeze all layers in the model first
     for param in model.parameters():
