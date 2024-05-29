@@ -36,7 +36,8 @@ def init_model(model_name, num_classes):
         "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block,
         "seresnet50_freeze": initialize_SENet_freeze_except_last,
         "vit": initialize_ViT,
-        "vit_freeze": initialize_ViT_freeze_except_last
+        "vit_freeze": initialize_ViT_freeze_except_last,
+        "vit_real": initialize_ViT_real
         # add here new models
     }
     
@@ -406,4 +407,9 @@ def initialize_ViT_freeze_except_last(num_classes):
     Load the pre-trained ViT model with ImageNet weights
     '''
     model = ViT(num_classes, freeze_layers_except_last = True)
+    return model
+
+def initialize_ViT_real(num_classes):
+
+    model = ViTFineTuner(num_classes = num_classes, freeze_layers = True, num_frozen_blocks = 6)
     return model
