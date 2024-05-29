@@ -64,7 +64,7 @@ The starting configuration will look something like this:
 
 - intromlproject
 
-  - `config.yaml` $\to$ config file where you can tinker everything concerning the model and its training.
+  - `config.yaml` $\to$ the configuration file where you can customize all aspects of model training and settings.
   
   - `requirements.txt`
   
