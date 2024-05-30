@@ -221,6 +221,7 @@ def initialize_densenet201(num_classes):
     """
     model = torchvision.models.densenet201(pretrained=True)
     model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    model.dropout = nn.Dropout(0.5)
     return model
 
 
