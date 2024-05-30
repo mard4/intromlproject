@@ -6,7 +6,7 @@ import wandb
 import yaml
 from utils.logger import setup_logger
 from utils.models_init import init_model, load_checkpoint
-from utils.training import validate
+from utils.training import test_model
 
 #configuration file
 with open('intromlproject/config.yaml', 'r') as file:
@@ -51,17 +51,16 @@ def main(config):
     logger = setup_logger(log_dir=config['save_dir'])
 
     # Initialize the model
-    model = init_model(config['model_name'], config['num_classes'])
-    model.to(config['device'])
-
-    # Modify the classifier layer to match the current dataset's number of classes
-    # if config['model_name'] == 'alexnet':
-    #     num_ftrs = model.classifier[6].in_features
-    #     model.classifier[6] = torch.nn.Linear(num_ftrs, config['num_classes'])
+    train_dataset = datasets.ImageFolder(root=os.path.join(config['data_dir'], 'train'), transform=transform)
+    train_loader = DataLoader(test_dataset, batch_size=config['batch_size'], shuffle=False, num_workers=4)
+    num_classes = len(train_loader.dataset.classes)
+    model = init_model(config['model_name'], num_classes=num_classes)
 
     # Load checkpoint
     if config['checkpoint']:
         model = load_checkpoint(model, config['checkpoint'], config['device'])
+    
+    model.to(config['device'])
 
     # Define the loss function
     criterion = getattr(torch.nn, config['criterion'])()
@@ -78,7 +77,7 @@ def main(config):
     test_loader = DataLoader(test_dataset, batch_size=config['batch_size'], shuffle=False, num_workers=4)
 
     # Validate the model on the test dataset
-    test_loss, test_accuracy = validate(model, test_loader, criterion, config['device'], epoch=None)
+    test_loss, test_accuracy = test_model(model, test_loader, criterion, config['device'], epoch=None)
     print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.2f}%")
 
     # Log results to wandb
