@@ -426,13 +426,16 @@ class SEResNet50(nn.Module):
 # output = model(input)
 # print(output.shape)
     
-from transformers import ViTForImageClassification
 
-class ViTFineTuner(nn.Module):
-    def __init__(self, num_classes, freeze_layers=True, num_frozen_blocks=6):
-        super(ViTFineTuner, self).__init__()
-        self.model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224-in21k')
+import pytorch_lightning as pl
+
+class ViTFineTuner(pl.LightningModule):
+    def __init__(self, model_name: str = 'vit_base_patch16_224', num_classes: int = 1000, freeze_layers = True, num_frozen_blocks = 6):
+        super(ViT, self).__init__()
         self.model.classifier = nn.Linear(self.model.classifier.in_features, num_classes)
+
+        self.model = timm.create_model(model_name, pretrained=True)
+        self.model.head = nn.Linear(self.model.head.in_features, num_classes)
         
         # Initialize the new classifier layer
         nn.init.xavier_uniform_(self.model.classifier.weight)
