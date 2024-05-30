@@ -1,11 +1,17 @@
 # Project on Fine-Grained Image Classification
 
 <div id="header" align="center">
-  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="80"/>
+  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="60"/>
 </div>
+
 This project is part of a Machine Learning course at the University of Trento.
 Fine-Grained Image Classification is a task in computer vision where the goal is to classify images into subcategories within a larger category. For example, classifying different species of birds or different types of flowers. This task is considered to be fine-grained because it requires the model to distinguish between subtle differences in visual appearance and patterns, making it more challenging than regular image classification tasks. 
+<div id="header" align="center">
+  <img src="images-readme/Screenshot 2024-05-29 003000.png" width="800" />
+</div>
 
+<br>
+<hr>
 <div style="text-align: center;"align="center">
   <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original.svg" title="Python" alt="Python" width="40" height="40"/>
   <img src="https://github.com/devicons/devicon/blob/master/icons/git/git-original-wordmark.svg" title="Git" alt="Git" width="40" height="40"/>&nbsp;
@@ -42,7 +48,7 @@ git clone https://github.com/lorenzochicco99/intromlproject/
 
 Create a virtual environment, activate it with:
 ```
-source .venv/bin/activate
+source nameofyourvenv/bin/activate
 ```
 then run:
 ```
@@ -57,17 +63,19 @@ The starting configuration will look something like this:
 - virtualenvironment
 
 - intromlproject
+
+  - `config.yaml` $\to$ the configuration file where you can customize all aspects of model training and settings.
   
   - `requirements.txt`
   
-  - `data_setupper.ipynb` $\to$ notebook used to download and prepare data
+  - `data-setupper.ipynb` $\to$ notebook used to download and prepare data.
   
-  - `training-main.py` $\to$ python script that trains and validates the chosen model
+  - `training-main.py` $\to$ python script that trains and validates the chosen model.
+  
+  - `training-main-optune.py` $\to$ python script that optimizes the hyperparameters of the model, then trains and validates it.
   
   - `testing-main.py` $\to$ python script that tests the provided model.
-  
-  - `testing-main-exam.py` $\to$ python script that tests a model and 
-  
+ 
   - utils/
     
     - `augmentation.py` $\to$ contains functions for data augmentation.
@@ -76,19 +84,28 @@ The starting configuration will look something like this:
     
     - `downloader.py` $\to$ contains functions to download data from different sources.
     
-    - `extractors.py` $\to$ contains functions to extract different archived files
+    - `extractors.py` $\to$ contains functions to extract different archived files.
     
     - `logger.py` $\to$ contains a function which initializes the logger.
     
     - `models_init.py` $\to$ contains functions to initialize models from already existing libraries.
     
-    - `optimizers.py` $\to$ contains a function to implement a custom optimizer. #todo
+    - `optimizers.py` $\to$ contains a function to implement a custom optimizer. TODO
     
     - `testing.py` $\to$ contains the function to test a model and send files to the competition server.
     
     - `training.py` $\to$ contains the functions to train and validate the model for a single epoch. 
     
     - `testing.py` $\to$ contains the function to test a model storing the predictions in a dictionary and submits it to a server.
+
+  - exam/
+    
+    - `testing-main-exam.py` $\to$ python script that tests a model and uploads to the exam website the results.
+
+    - `testing.py` $\to$ contains the functions to test a model and to upload the results.
+
+    - `testing-main-optune.py` $\to$ TODO
+
 
 ## Usage
 

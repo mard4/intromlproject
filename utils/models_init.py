@@ -36,7 +36,8 @@ def init_model(model_name, num_classes):
         "initialize_densenet201_freeze_1st" :initialize_densenet201_freeze_1st_block,
         "seresnet50_freeze": initialize_SENet_freeze_except_last,
         "vit": initialize_ViT,
-        "vit_freeze": initialize_ViT_freeze_except_last
+        "vit_freeze": initialize_ViT_freeze_except_last,
+        "vit_real": initialize_ViT_real
         # add here new models
     }
     
@@ -321,9 +322,9 @@ def initialize_vit_base_patch16_224(num_classes):
     # else:
     #     optimizer = optim.Adam(model.parameters(), lr=1e-4)
     return model
-    model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+    # model.classifier = nn.Linear(model.classifier.in_features, num_classes)
     
-    return model
+    # return model
 
 def initialize_efficientnetv2_freeze(num_classes):
     """
@@ -338,7 +339,7 @@ def initialize_efficientnetv2_freeze(num_classes):
         torch.nn.Module: The EfficientNetV2S  model with the modified classifier.
     """
     
-    model = torchvision.models.efficientnet_v2_s(pretrained=True)
+    model = torchvision.models.efficientnet_v2_s(weights=torchvision.models.EfficientNet_V2_S_Weights.IMAGENET1K_V1)
     
     # Freeze all layers in the model first
     for param in model.parameters():
@@ -375,6 +376,7 @@ def initialize_SENet(num_classes):
         torch.nn.Module: The SEResNet50 model with the modified classifier.
     """
     model = SEResNet50(num_classes)
+    # model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes)
     return model
 
 def initialize_SENet_freeze_except_last(num_classes):
@@ -405,4 +407,9 @@ def initialize_ViT_freeze_except_last(num_classes):
     Load the pre-trained ViT model with ImageNet weights
     '''
     model = ViT(num_classes, freeze_layers_except_last = True)
+    return model
+
+def initialize_ViT_real(num_classes):
+
+    model = ViTFineTuner(num_classes = num_classes, freeze_layers = True, num_frozen_blocks = 6)
     return model
