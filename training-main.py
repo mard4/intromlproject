@@ -43,10 +43,12 @@ def run_epochs(model,
                 ):
     
     start_time = time.time()
+
+    counter = 0
+    patience = config['patience']
+    best_val_loss = float('inf')
     for epoch in range(1, num_epochs + 1):
-        counter = 0
-        patience = config['patience']
-        best_val_loss = float('inf')
+
         train_loss, train_acc = train_model(model = model,
                                             train_loader = train_loader,
                                             optimizer = optimizer,
