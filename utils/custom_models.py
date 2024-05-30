@@ -155,54 +155,54 @@ import timm
 #         return params_info
 
 
-class ViT(nn.Module):
-    def __init__(self, num_classes=1000, freeze_layers_except_last=False, layers_to_freeze=None):
-        super(ViT, self).__init__()
-        self.model_name = 'vit_base_patch16_224'
-        self.num_classes = num_classes
-        self.freeze_layers_except_last = freeze_layers_except_last
-        self.layers_to_freeze = layers_to_freeze if layers_to_freeze is not None else []
-        self.model = timm.create_model(self.model_name, pretrained=True)
+# class ViT(nn.Module):
+#     def __init__(self, num_classes=1000, freeze_layers_except_last=False, layers_to_freeze=None):
+#         super(ViT, self).__init__()
+#         self.model_name = 'vit_base_patch16_224'
+#         self.num_classes = num_classes
+#         self.freeze_layers_except_last = freeze_layers_except_last
+#         self.layers_to_freeze = layers_to_freeze if layers_to_freeze is not None else []
+#         self.model = timm.create_model(self.model_name, pretrained=True)
         
-        if self.freeze_layers_except_last:
-            self.freeze_model_layers()
-            self.set_last_layer_trainable()
-        elif self.layers_to_freeze:
-            self.freeze_specific_layers()
+#         if self.freeze_layers_except_last:
+#             self.freeze_model_layers()
+#             self.set_last_layer_trainable()
+#         elif self.layers_to_freeze:
+#             self.freeze_specific_layers()
 
-        self.total_params = sum(p.numel() for p in self.model.parameters())
-        self.trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
-        self.frozen_params = self.total_params - self.trainable_params
+#         self.total_params = sum(p.numel() for p in self.model.parameters())
+#         self.trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+#         self.frozen_params = self.total_params - self.trainable_params
 
-        # Define the last layer for classification
-        self.model.head = nn.Linear(self.model.head.in_features, self.num_classes)
+#         # Define the last layer for classification
+#         self.model.head = nn.Linear(self.model.head.in_features, self.num_classes)
 
-    def freeze_model_layers(self):
-        for param in self.model.parameters():
-            param.requires_grad = False
+#     def freeze_model_layers(self):
+#         for param in self.model.parameters():
+#             param.requires_grad = False
 
-    def set_last_layer_trainable(self):
-        for param in self.model.head.parameters():
-            param.requires_grad = True
+#     def set_last_layer_trainable(self):
+#         for param in self.model.head.parameters():
+#             param.requires_grad = True
 
-    def freeze_specific_layers(self):
-        for name, param in self.model.named_parameters():
-            if any(layer_name in name for layer_name in self.layers_to_freeze):
-                param.requires_grad = False
+#     def freeze_specific_layers(self):
+#         for name, param in self.model.named_parameters():
+#             if any(layer_name in name for layer_name in self.layers_to_freeze):
+#                 param.requires_grad = False
 
-    def get_params_info(self):
-        params_info = {
-            'total_params': self.total_params,
-            'trainable_params': self.trainable_params,
-            'frozen_params': self.frozen_params,
-        }
+#     def get_params_info(self):
+#         params_info = {
+#             'total_params': self.total_params,
+#             'trainable_params': self.trainable_params,
+#             'frozen_params': self.frozen_params,
+#         }
         
-        return params_info
+#         return params_info
     
-    def forward(self, x):
-        # Pass input through the pre-trained model
-        x = self.model(x)
-        return x
+#     def forward(self, x):
+#         # Pass input through the pre-trained model
+#         x = self.model(x)
+#         return x
     
 
 # devo ancora capire bene sta rete ma 
@@ -312,3 +312,16 @@ class SEResNet50(nn.Module):
             layers.append(block(self.inplanes, planes, reduction=reduction))  # Adjusted reduction ratio
 
         return nn.Sequential(*layers)
+
+import pytorch_lightning as pl
+
+class ViT(pl.LightningModule):
+    def __init__(self, model_name: str = 'vit_base_patch16_224', num_classes: int = 1000):
+        super(ViT, self).__init__()
+        
+        # Load a pre-trained ViT model and modify the classifier head
+        self.model = timm.create_model(model_name, pretrained=True)
+        self.model.head = nn.Linear(self.model.head.in_features, num_classes)
+        
+    def forward(self, x):
+        return self.model(x)
