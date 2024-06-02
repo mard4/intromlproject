@@ -95,7 +95,11 @@ def initialize_efficientnetv2(num_classes, dropout_rate = 0):
     return model
 
 def initialize_SENet(num_classes, dropout_rate):
-    pass
+    from utils.main.models.senet import CustomSqueezeNet
+    model = CustomSqueezeNet(num_classes, dropout_rate)
+    return model
 
 def initialize_ViT(num_classes, dropout_rate):
-    pass
+    from utils.main.models.vit import ViTFineTuner
+    model = ViTFineTuner(num_classes, dropout_rate)
+    return model
