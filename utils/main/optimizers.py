@@ -1,8 +1,21 @@
 import torch.optim as optim
 import torch
 
+def init_optimizer(model, config):
+    """
+    Initializes and returns an optimizer based on the provided configuration.
 
-def create_optimizer(model, config):
+    Args:
+        model (torch.nn.Module): The model for which the optimizer is initialized.
+        config (dict): A dictionary containing the configuration parameters for the optimizer.
+
+    Returns:
+        torch.optim.Optimizer: The initialized optimizer.
+
+    Raises:
+        ValueError: If the provided optimizer type is not supported.
+
+    """
     if config['optimizer_type'] == 'simple':
         optimizer = simple_optimizer(model, config)
     elif config['optimizer_type'] == 'custom':
@@ -12,14 +25,14 @@ def create_optimizer(model, config):
     print("Optimizer", optimizer)
     return optimizer
         
-
-    
 def simple_optimizer(model, config):
-    if config['optimizer'] == 'SGD':
+    config['optimizer'] = config['optimizer'].lower()
+    if config['optimizer'] == 'sgd':
         optimizer = torch.optim.SGD(model.parameters(), lr=config['learning_rate'], weight_decay=config['weight_decay'], momentum=config['momentum'])
-    elif config['optimizer'] == 'Adam' or 'AdamW':
-        #betas
+    elif config['optimizer'] == 'adam':
         optimizer = torch.optim.Adam(model.parameters(), lr=config['learning_rate'], weight_decay=config['weight_decay'])
+    elif config['optimizer'] == 'adamw':
+        optimizer = torch.optim.AdamW(model.parameters(), lr=config['learning_rate'], weight_decay=config['weight_decay'])
     else:
         raise ValueError(f"Unsupported optimizer type: {config['optimizer']}")
     return optimizer
@@ -61,44 +74,3 @@ def custom_optimizer(model, config):
         ], lr=config['learning_rate'] / 10, weight_decay=config['weight_decay'])
 
     return optimizer
-# def custom_optimizer(model, config):
-#     """Custom optimizer with different learning rates for specified parameter groups.
-#     Supports SGD and Adam optimizers.
-    
-#     Args:
-#         model: The model containing the parameters to optimize.
-#         lr: Base learning rate.
-#         wd: Weight decay.
-#         param_groups: List of parameter group dictionaries, each containing 'prefixes' and optional specific 'lr'.
-#         optim: Optimizer class (e.g., torch.optim.SGD, torch.optim.Adam).
-#         momentum: Momentum factor (for SGD).
-#         betas: Coefficients used for computing running averages of gradient and its square (for Adam).
-    
-#     Returns:
-#         optimizer: The configured optimizer.
-#     """
-#     params = []
-#     # Define parameter groups
-#     # param_groups = [
-#     #     {"params": model.layer1.parameters(), "lr": config['learning_rate_layer1']},
-#     #     {"params": model.layer2.parameters(), "lr": config['learning_rate_layer2']},
-#     #     # Add more parameter groups as needed
-#     # ]
-#     param_groups = {
-#         "params": model.parameters(),
-#         "lr": config['learning_rate'],
-#         "weight_decay": config['weight_decay']
-#     }
-#     for group in param_groups:
-#         group_params = {'params': []}
-#         group_params.update(group)
-
-#         for name, param in model.named_parameters():
-#             if any(name.startswith(prefix) for prefix in group['prefixes']):
-#                 group_params['params'].append(param)
-
-#         params.append(group_params)
-
-#     optimizer = simple_optimizer(model, config)
-
-#     return optimizer
