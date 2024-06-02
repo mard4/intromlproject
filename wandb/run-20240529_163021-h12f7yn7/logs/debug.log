@@ -1,0 +1,28 @@
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Current SDK version is 0.17.0
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Configure stats pid to 13424
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Loading settings from /home/disi/.config/wandb/settings
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Loading settings from /home/disi/ml/intromlproject/wandb/settings
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'training-main.py', 'program_abspath': '/home/disi/ml/intromlproject/training-main.py', 'program': '/home/disi/ml/intromlproject/training-main.py'}
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_init.py:_log_setup():520] Logging user logs to /home/disi/ml/intromlproject/wandb/run-20240529_163021-h12f7yn7/logs/debug.log
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_init.py:_log_setup():521] Logging internal logs to /home/disi/ml/intromlproject/wandb/run-20240529_163021-h12f7yn7/logs/debug-internal.log
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_init.py:init():560] calling init triggers
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_init.py:init():567] wandb.init called with sweep_config: {}
+config: {'root': '/home/disi/ml', 'img_folder': 'CUB_200_2011', 'model_name': 'efficientnetv2', 'data_dir': '/home/disi/ml/datasets/CUB_200_2011', 'dataset_name': 'CUB_200_2011', 'checkpoint': None, 'save_dir': '/home/disi/ml/checkpoints/efficientnetv2_CUB_200_2011', 'project_name': 'efficientnetv2_test', 'image_size': 224, 'mean': [0.485, 0.456, 0.406], 'std': [0.229, 0.224, 0.225], 'batch_size': 32, 'epochs': 5, 'optimizer': 'AdamW', 'optimizer_type': 'simple', 'learning_rate': 0.0015534590993351726, 'weight_decay': 1.3840815650438413e-06, 'momentum': 0.736045219441998, 'criterion': 'CrossEntropyLoss', 'scheduler': True, 'step_size': 10, 'patience': 5, 'dropout_rate': 0.4704610106127725, 'device': 'cuda'}
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_init.py:init():610] starting backend
+2024-05-29 16:30:21,498 INFO    MainThread:13424 [wandb_init.py:init():614] setting up manager
+2024-05-29 16:30:21,499 INFO    MainThread:13424 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-05-29 16:30:21,499 INFO    MainThread:13424 [wandb_init.py:init():622] backend started and connected
+2024-05-29 16:30:21,501 INFO    MainThread:13424 [wandb_init.py:init():711] updated telemetry
+2024-05-29 16:30:21,504 INFO    MainThread:13424 [wandb_init.py:init():744] communicating run to backend with 90.0 second timeout
+2024-05-29 16:30:21,854 INFO    MainThread:13424 [wandb_run.py:_on_init():2396] communicating current version
+2024-05-29 16:30:21,888 INFO    MainThread:13424 [wandb_run.py:_on_init():2405] got version response 
+2024-05-29 16:30:21,888 INFO    MainThread:13424 [wandb_init.py:init():795] starting run threads in backend
+2024-05-29 16:30:22,067 INFO    MainThread:13424 [wandb_run.py:_console_start():2374] atexit reg
+2024-05-29 16:30:22,067 INFO    MainThread:13424 [wandb_run.py:_redirect():2229] redirect: wrap_raw
+2024-05-29 16:30:22,067 INFO    MainThread:13424 [wandb_run.py:_redirect():2294] Wrapping output streams.
+2024-05-29 16:30:22,067 INFO    MainThread:13424 [wandb_run.py:_redirect():2319] Redirects installed.
+2024-05-29 16:30:22,068 INFO    MainThread:13424 [wandb_init.py:init():838] run started, returning control to user process
+2024-05-29 16:37:53,913 WARNING MsgRouterThr:13424 [router.py:message_loop():77] message_loop has been closed

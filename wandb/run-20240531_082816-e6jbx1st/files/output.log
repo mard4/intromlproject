@@ -1,0 +1,350 @@
+ ----------
+Epoch 1/20, Current Learning Rate: 0.001
+  0%|          | 0/125 [00:00<?, ?it/s]/home/disi/ml/.venv/lib/python3.11/site-packages/torch/autograd/graph.py:744: UserWarning: Plan failed with a cudnnException: CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR: cudnnFinalize Descriptor Failed cudnn_status: CUDNN_STATUS_NOT_SUPPORTED (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:919.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:41<00:00,  2.98it/s]
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.35it/s]
+
+ 84%|████████▍ | 27/32 [00:02<00:00, 11.89it/s]
+Epoch 1/20, Loss: 3.9593, Val Loss: 3.4933
+Train Accuracy: 0.1760, Val Accuracy: 0.1560
+Epoch time:  56.05476117134094
+Best model with val accuracy: 0.1560
+ ----------
+100%|██████████| 32/32 [00:03<00:00, 10.48it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:38<00:00,  3.28it/s]
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.35it/s]
+
+ 72%|███████▏  | 23/32 [00:02<00:00, 11.57it/s]
+Epoch 2/20, Loss: 3.2945, Val Loss: 2.9362
+Train Accuracy: 0.2895, Val Accuracy: 0.2370
+Epoch time:  52.103272914886475
+Best model with val accuracy: 0.2370
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.96it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:38<00:00,  3.23it/s]
+
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.21it/s]
+ 34%|███▍      | 11/32 [00:01<00:01, 10.77it/s]
+Epoch 3/20, Loss: 2.8817, Val Loss: 2.8633
+Train Accuracy: 0.3300, Val Accuracy: 0.2650
+Epoch time:  52.814918756484985
+Best model with val accuracy: 0.2650
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.87it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:39<00:00,  3.19it/s]
+
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.14it/s]
+ 53%|█████▎    | 17/32 [00:01<00:01, 11.20it/s]
+Epoch 4/20, Loss: 2.5625, Val Loss: 2.8386
+Train Accuracy: 0.3835, Val Accuracy: 0.2950
+Epoch time:  53.42004632949829
+Best model with val accuracy: 0.2950
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.81it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:39<00:00,  3.16it/s]
+
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.06it/s]
+ 53%|█████▎    | 17/32 [00:01<00:01, 11.16it/s]
+Epoch 5/20, Loss: 2.4015, Val Loss: 2.8977
+Train Accuracy: 0.3645, Val Accuracy: 0.2810
+Epoch time:  53.82709527015686
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.75it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:39<00:00,  3.14it/s]
+
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.02it/s]
+ 47%|████▋     | 15/32 [00:01<00:01, 10.98it/s]
+Epoch 6/20, Loss: 1.8740, Val Loss: 2.1329
+Train Accuracy: 0.6385, Val Accuracy: 0.4260
+Epoch time:  54.10149025917053
+Best model with val accuracy: 0.4260
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.70it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:39<00:00,  3.14it/s]
+
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.04it/s]
+ 41%|████      | 13/32 [00:01<00:01, 10.78it/s]
+Epoch 7/20, Loss: 1.4964, Val Loss: 2.0161
+Train Accuracy: 0.6935, Val Accuracy: 0.4590
+Epoch time:  54.11888766288757
+Best model with val accuracy: 0.4590
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.68it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:39<00:00,  3.14it/s]
+
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.01it/s]
+
+100%|██████████| 32/32 [00:02<00:00, 10.72it/s]
+Epoch 8/20, Loss: 1.3393, Val Loss: 1.9881
+Train Accuracy: 0.7490, Val Accuracy: 0.4670
+Epoch time:  54.20867609977722
+Best model with val accuracy: 0.4670
+ ----------
+Epoch 9/20, Current Learning Rate: 0.0001
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:39<00:00,  3.14it/s]
+
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.02it/s]
+
+ 91%|█████████ | 29/32 [00:02<00:00, 11.36it/s]
+Epoch 9/20, Loss: 1.2041, Val Loss: 1.9725
+Train Accuracy: 0.7690, Val Accuracy: 0.4820
+Epoch time:  54.186089754104614
+Best model with val accuracy: 0.4820
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.70it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100%|██████████| 125/125 [00:39<00:00,  3.14it/s]
+
+
+
+
+100%|██████████| 125/125 [00:11<00:00, 11.04it/s]
+
+ 78%|███████▊  | 25/32 [00:02<00:00, 11.31it/s]
+Epoch 10/20, Loss: 1.1114, Val Loss: 1.9695
+Train Accuracy: 0.8097, Val Accuracy: 0.4860
+Epoch time:  54.137717723846436
+Best model with val accuracy: 0.4860
+ ----------
+100%|██████████| 32/32 [00:02<00:00, 10.72it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

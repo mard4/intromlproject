@@ -1,0 +1,419 @@
+Data loaded correctly
+number of classes 70
+Optimizer SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 0.001
+    maximize: False
+    momentum: 0.736045219441998
+    nesterov: False
+    weight_decay: 0.1
+)
+Training phase ...
+/home/disi/ml/.venv/lib/python3.11/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/disi/ml/.venv/lib/python3.11/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=EfficientNet_V2_S_Weights.IMAGENET1K_V1`. You can also use `weights=EfficientNet_V2_S_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+2024-05-28 20:23:54,960 - training_logger - INFO - Configurations: {'root': '/home/disi/ml', 'img_folder': 'aircraft', 'model_name': 'efficientnetv2_freeze', 'data_dir': '/home/disi/ml/datasets/aircraft', 'dataset_name': 'aircraft', 'checkpoint': None, 'save_dir': '/home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try', 'project_name': 'efficientnetv2_freeze_test', 'image_size': 224, 'mean': [0.485, 0.456, 0.406], 'std': [0.229, 0.224, 0.225], 'batch_size': 32, 'epochs': 20, 'optimizer': 'SGD', 'optimizer_type': 'simple', 'learning_rate': 0.001, 'weight_decay': 0.1, 'momentum': 0.736045219441998, 'criterion': 'CrossEntropyLoss', 'scheduler': True, 'step_size': 10, 'patience': 5, 'dropout_rate': 0.3317332509897824, 'device': 'cuda'}
+
+
+
+
+
+
+
+Epoch 1 - Training:  92%|███████████████████████████████████████████████████████████████▋     | 97/105 [00:15<00:01,  6.78it/s]
+Epoch 1 - Training:  99%|███████████████████████████████████████████████████████████████████▎| 104/105 [00:16<00:00,  6.77it/s]/home/disi/ml/.venv/lib/python3.11/site-packages/torch/autograd/graph.py:744: UserWarning: Plan failed with a cudnnException: CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR: cudnnFinalize Descriptor Failed cudnn_status: CUDNN_STATUS_NOT_SUPPORTED (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:919.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+Epoch 1 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.42it/s]
+2024-05-28 20:24:11,324 - training_logger - INFO - Training: Average loss: 4.2491, Accuracy: 1.31%
+2024-05-28 20:24:11,324 - training_logger - INFO - Epoch 1 completed in 16.36 seconds
+
+
+
+
+Validation:  92%|███████████████████████████████████████████████████████████████████████▏     | 97/105 [00:08<00:00, 11.70it/s]
+Training loss: 4.249, Training accuracy: 1.310
+Validation loss: 4.242, Validation accuracy: 3.125
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.05it/s]
+2024-05-28 20:24:20,988 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch1.pth
+
+
+
+
+
+
+
+Epoch 2 - Training:  94%|█████████████████████████████████████████████████████████████████    | 99/105 [00:15<00:00,  6.67it/s]
+Epoch 2 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.54it/s]
+2024-05-28 20:24:37,061 - training_logger - INFO - Training: Average loss: 4.2369, Accuracy: 3.01%
+2024-05-28 20:24:37,061 - training_logger - INFO - Epoch 2 completed in 16.06 seconds
+
+
+
+
+Validation:  96%|█████████████████████████████████████████████████████████████████████████   | 101/105 [00:09<00:00, 11.90it/s]
+Training loss: 4.237, Training accuracy: 3.006
+Validation loss: 4.233, Validation accuracy: 6.042
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.17it/s]
+2024-05-28 20:24:46,612 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch2.pth
+
+
+
+
+
+
+
+Epoch 3 - Training:  96%|█████████████████████████████████████████████████████████████████▍  | 101/105 [00:15<00:00,  6.63it/s]
+Epoch 3 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.50it/s]
+2024-05-28 20:25:02,785 - training_logger - INFO - Training: Average loss: 4.2291, Accuracy: 5.42%
+2024-05-28 20:25:02,786 - training_logger - INFO - Epoch 3 completed in 16.17 seconds
+
+
+
+
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.18it/s]
+Training loss: 4.229, Training accuracy: 5.417
+Validation loss: 4.227, Validation accuracy: 8.065
+Training phase ...
+2024-05-28 20:25:12,326 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch3.pth
+
+
+
+
+
+
+
+Epoch 4 - Training:  97%|██████████████████████████████████████████████████████████████████  | 102/105 [00:15<00:00,  6.60it/s]
+Epoch 4 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.44it/s]
+2024-05-28 20:25:28,641 - training_logger - INFO - Training: Average loss: 4.2236, Accuracy: 7.11%
+2024-05-28 20:25:28,641 - training_logger - INFO - Epoch 4 completed in 16.31 seconds
+
+
+
+
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 10.88it/s]
+Training loss: 4.224, Training accuracy: 7.113
+Validation loss: 4.222, Validation accuracy: 7.917
+Training phase ...
+2024-05-28 20:25:38,443 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch4.pth
+
+
+
+
+
+
+
+Epoch 5 - Training:  96%|█████████████████████████████████████████████████████████████████▍  | 101/105 [00:15<00:00,  6.54it/s]
+Epoch 5 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.41it/s]
+2024-05-28 20:25:54,830 - training_logger - INFO - Training: Average loss: 4.2189, Accuracy: 7.74%
+2024-05-28 20:25:54,830 - training_logger - INFO - Epoch 5 completed in 16.38 seconds
+
+
+
+
+Validation:  98%|██████████████████████████████████████████████████████████████████████████▌ | 103/105 [00:09<00:00, 11.54it/s]
+Training loss: 4.219, Training accuracy: 7.738
+Validation loss: 4.219, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 10.90it/s]
+2024-05-28 20:26:04,614 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch5.pth
+
+
+
+
+
+
+
+Epoch 6 - Training:  95%|████████████████████████████████████████████████████████████████▊   | 100/105 [00:15<00:00,  6.52it/s]
+Epoch 6 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.41it/s]
+2024-05-28 20:26:21,007 - training_logger - INFO - Training: Average loss: 4.2150, Accuracy: 7.89%
+2024-05-28 20:26:21,007 - training_logger - INFO - Epoch 6 completed in 16.38 seconds
+
+
+
+
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.20it/s]
+Training loss: 4.215, Training accuracy: 7.887
+Validation loss: 4.216, Validation accuracy: 7.917
+Training phase ...
+2024-05-28 20:26:30,537 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch6.pth
+
+
+
+
+
+
+
+Epoch 7 - Training:  96%|█████████████████████████████████████████████████████████████████▍  | 101/105 [00:15<00:00,  6.56it/s]
+Epoch 7 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.36it/s]
+2024-05-28 20:26:47,063 - training_logger - INFO - Training: Average loss: 4.2118, Accuracy: 8.08%
+2024-05-28 20:26:47,063 - training_logger - INFO - Epoch 7 completed in 16.52 seconds
+
+
+
+
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.14it/s]
+Training loss: 4.212, Training accuracy: 8.075
+Validation loss: 4.213, Validation accuracy: 7.917
+Training phase ...
+2024-05-28 20:26:56,645 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch7.pth
+
+
+
+
+
+
+
+Epoch 8 - Training:  95%|████████████████████████████████████████████████████████████████▊   | 100/105 [00:15<00:00,  6.51it/s]
+Epoch 8 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.34it/s]
+2024-05-28 20:27:13,224 - training_logger - INFO - Training: Average loss: 4.2088, Accuracy: 7.95%
+2024-05-28 20:27:13,224 - training_logger - INFO - Epoch 8 completed in 16.57 seconds
+
+
+
+
+Validation:  96%|█████████████████████████████████████████████████████████████████████████   | 101/105 [00:09<00:00, 11.61it/s]
+Training loss: 4.209, Training accuracy: 7.946
+Validation loss: 4.209, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.04it/s]
+2024-05-28 20:27:22,889 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch8.pth
+
+
+
+
+
+
+
+Epoch 9 - Training:  94%|█████████████████████████████████████████████████████████████████    | 99/105 [00:15<00:00,  6.46it/s]
+Epoch 9 - Training: 100%|████████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.34it/s]
+2024-05-28 20:27:39,447 - training_logger - INFO - Training: Average loss: 4.2043, Accuracy: 8.08%
+2024-05-28 20:27:39,447 - training_logger - INFO - Epoch 9 completed in 16.55 seconds
+
+
+
+
+Validation:  94%|████████████████████████████████████████████████████████████████████████▌    | 99/105 [00:09<00:00, 11.43it/s]
+Training loss: 4.204, Training accuracy: 8.075
+Validation loss: 4.205, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.03it/s]
+2024-05-28 20:27:49,120 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch9.pth
+
+
+
+
+
+
+
+Epoch 10 - Training:  92%|██████████████████████████████████████████████████████████████▊     | 97/105 [00:15<00:01,  6.45it/s]
+Epoch 10 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.32it/s]
+2024-05-28 20:28:05,744 - training_logger - INFO - Training: Average loss: 4.1969, Accuracy: 8.08%
+2024-05-28 20:28:05,744 - training_logger - INFO - Epoch 10 completed in 16.62 seconds
+
+
+
+
+Validation:  92%|███████████████████████████████████████████████████████████████████████▏     | 97/105 [00:08<00:00, 11.53it/s]
+Training loss: 4.197, Training accuracy: 8.075
+Validation loss: 4.193, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.09it/s]
+2024-05-28 20:28:15,369 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch10.pth
+
+
+
+
+
+
+
+Epoch 11 - Training:  91%|██████████████████████████████████████████████████████████████▏     | 96/105 [00:15<00:01,  6.44it/s]
+Epoch 11 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.34it/s]
+2024-05-28 20:28:31,951 - training_logger - INFO - Training: Average loss: 4.1843, Accuracy: 7.95%
+2024-05-28 20:28:31,951 - training_logger - INFO - Epoch 11 completed in 16.57 seconds
+
+
+
+
+Validation:  92%|███████████████████████████████████████████████████████████████████████▏     | 97/105 [00:08<00:00, 11.58it/s]
+Training loss: 4.184, Training accuracy: 7.946
+Validation loss: 4.169, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.13it/s]
+2024-05-28 20:28:41,535 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch11.pth
+
+
+
+
+
+
+
+Epoch 12 - Training:  90%|█████████████████████████████████████████████████████████████▌      | 95/105 [00:15<00:01,  6.44it/s]
+Epoch 12 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.32it/s]
+2024-05-28 20:28:58,148 - training_logger - INFO - Training: Average loss: 4.1499, Accuracy: 7.95%
+2024-05-28 20:28:58,148 - training_logger - INFO - Epoch 12 completed in 16.61 seconds
+
+
+
+
+Validation:  87%|██████████████████████████████████████████████████████████████████▋          | 91/105 [00:08<00:01, 11.30it/s]
+Training loss: 4.150, Training accuracy: 7.946
+Validation loss: 4.103, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 10.90it/s]
+2024-05-28 20:29:07,938 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch12.pth
+
+
+
+
+
+
+
+
+Epoch 13 - Training:  98%|█████████████████████████████████████████████████████████████████▋ | 103/105 [00:16<00:00,  6.49it/s]
+Epoch 13 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.33it/s]
+2024-05-28 20:29:24,534 - training_logger - INFO - Training: Average loss: 4.0967, Accuracy: 7.95%
+2024-05-28 20:29:24,534 - training_logger - INFO - Epoch 13 completed in 16.59 seconds
+
+
+
+Validation:  81%|██████████████████████████████████████████████████████████████▎              | 85/105 [00:07<00:01, 11.52it/s]
+Training loss: 4.097, Training accuracy: 7.946
+Validation loss: 4.067, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.12it/s]
+2024-05-28 20:29:34,128 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch13.pth
+
+
+
+
+
+
+
+
+Epoch 14 - Training:  97%|█████████████████████████████████████████████████████████████████  | 102/105 [00:16<00:00,  6.46it/s]
+Epoch 14 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.33it/s]
+2024-05-28 20:29:50,727 - training_logger - INFO - Training: Average loss: 4.0529, Accuracy: 7.95%
+2024-05-28 20:29:50,727 - training_logger - INFO - Epoch 14 completed in 16.59 seconds
+
+
+
+Validation:  79%|████████████████████████████████████████████████████████████▊                | 83/105 [00:07<00:01, 11.57it/s]
+Training loss: 4.053, Training accuracy: 7.946
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.14it/s]
+2024-05-28 20:30:00,306 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch14.pth
+Epoch 15 - Training:   0%|                                                                             | 0/105 [00:00<?, ?it/s]
+
+
+
+
+
+
+
+
+Epoch 15 - Training:  96%|████████████████████████████████████████████████████████████████▍  | 101/105 [00:16<00:00,  6.47it/s]
+Epoch 15 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.31it/s]
+2024-05-28 20:30:16,953 - training_logger - INFO - Training: Average loss: 4.0036, Accuracy: 7.95%
+2024-05-28 20:30:16,953 - training_logger - INFO - Epoch 15 completed in 16.64 seconds
+
+
+
+
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.12it/s]
+Training loss: 4.004, Training accuracy: 7.946
+Validation loss: 3.998, Validation accuracy: 7.917
+Training phase ...
+2024-05-28 20:30:26,551 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch15.pth
+
+
+
+
+
+
+
+Epoch 16 - Training:  95%|███████████████████████████████████████████████████████████████▊   | 100/105 [00:15<00:00,  6.48it/s]
+Epoch 16 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.33it/s]
+2024-05-28 20:30:43,158 - training_logger - INFO - Training: Average loss: 3.9881, Accuracy: 7.95%
+2024-05-28 20:30:43,158 - training_logger - INFO - Epoch 16 completed in 16.60 seconds
+
+
+
+
+Validation:  98%|██████████████████████████████████████████████████████████████████████████▌ | 103/105 [00:09<00:00, 11.55it/s]
+Training loss: 3.988, Training accuracy: 7.946
+Validation loss: 4.033, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 11.13it/s]
+2024-05-28 20:30:52,747 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch16.pth
+
+
+
+
+
+
+
+Epoch 17 - Training:  94%|████████████████████████████████████████████████████████████████    | 99/105 [00:15<00:00,  6.48it/s]
+Epoch 17 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.34it/s]
+2024-05-28 20:31:09,307 - training_logger - INFO - Training: Average loss: 3.9634, Accuracy: 7.95%
+2024-05-28 20:31:09,308 - training_logger - INFO - Epoch 17 completed in 16.55 seconds
+
+
+
+
+Validation:  94%|████████████████████████████████████████████████████████████████████████▌    | 99/105 [00:09<00:00, 11.48it/s]
+Training loss: 3.963, Training accuracy: 7.946
+Validation loss: 3.991, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 10.99it/s]
+2024-05-28 20:31:19,013 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch17.pth
+
+
+
+
+
+
+
+Epoch 18 - Training:  93%|███████████████████████████████████████████████████████████████▍    | 98/105 [00:15<00:01,  6.45it/s]
+Epoch 18 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.33it/s]
+2024-05-28 20:31:35,621 - training_logger - INFO - Training: Average loss: 3.9366, Accuracy: 8.08%
+2024-05-28 20:31:35,622 - training_logger - INFO - Epoch 18 completed in 16.60 seconds
+
+
+
+
+Validation:  92%|███████████████████████████████████████████████████████████████████████▏     | 97/105 [00:08<00:00, 11.56it/s]
+Training loss: 3.937, Training accuracy: 8.075
+Validation loss: 3.916, Validation accuracy: 7.917
+Validation: 100%|████████████████████████████████████████████████████████████████████████████| 105/105 [00:09<00:00, 10.99it/s]
+2024-05-28 20:31:45,329 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch18.pth
+
+
+
+
+
+
+
+Epoch 19 - Training:  91%|██████████████████████████████████████████████████████████████▏     | 96/105 [00:15<00:01,  6.41it/s]
+Epoch 19 - Training: 100%|███████████████████████████████████████████████████████████████████| 105/105 [00:16<00:00,  6.32it/s]
+2024-05-28 20:32:01,956 - training_logger - INFO - Training: Average loss: 3.9313, Accuracy: 7.95%
+2024-05-28 20:32:01,956 - training_logger - INFO - Epoch 19 completed in 16.62 seconds
+Validation:  22%|████████████████▊                                                            | 23/105 [00:02<00:08,  9.97it/s]
+Validation:  43%|█████████████████████████████████                                            | 45/105 [00:04<00:05, 11.37it/s]
+Validation:  66%|██████████████████████████████████████████████████▌                          | 69/105 [00:06<00:03, 11.55it/s]
+Validation:  87%|██████████████████████████████████████████████████████████████████▋          | 91/105 [00:08<00:01, 11.56it/s]
+Validation:  87%|██████████████████████████████████████████████████████████████████▋          | 91/105 [00:08<00:01, 11.56it/s]
+Training loss: 3.931, Training accuracy: 7.946
+Validation loss: 3.936, Validation accuracy: 7.917
+Epoch 20 - Training:   2%|█▎                                                                   | 2/105 [00:00<00:33,  3.11it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Epoch 20 - Training:  14%|█████████▋                                                          | 15/105 [00:02<00:13,  6.44it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Epoch 20 - Training:  27%|██████████████████▏                                                 | 28/105 [00:04<00:11,  6.48it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Epoch 20 - Training:  39%|██████████████████████████▌                                         | 41/105 [00:06<00:09,  6.46it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Epoch 20 - Training:  51%|██████████████████████████████████▉                                 | 54/105 [00:08<00:07,  6.43it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Epoch 20 - Training:  64%|███████████████████████████████████████████▍                        | 67/105 [00:10<00:05,  6.44it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Epoch 20 - Training:  75%|███████████████████████████████████████████████████▏                | 79/105 [00:12<00:04,  6.42it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Epoch 20 - Training:  88%|███████████████████████████████████████████████████████████▌        | 92/105 [00:14<00:02,  6.44it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Validation:   0%|                                                                                      | 0/105 [00:00<?, ?it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Validation:   0%|                                                                                      | 0/105 [00:00<?, ?it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Validation:  18%|█████████████▉                                                               | 19/105 [00:02<00:07, 11.24it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Validation:  41%|███████████████████████████████▌                                             | 43/105 [00:04<00:05, 11.37it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Validation:  62%|███████████████████████████████████████████████▋                             | 65/105 [00:06<00:03, 11.54it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Validation:  85%|█████████████████████████████████████████████████████████████████▎           | 89/105 [00:08<00:01, 11.56it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Validation:  85%|█████████████████████████████████████████████████████████████████▎           | 89/105 [00:08<00:01, 11.56it/s]efficientnetv2_freeze_aircraft_epoch19.pth
+Training loss: 3.912, Training accuracy: 7.946
+2024-05-28 20:32:38,137 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch20.pth
+2024-05-28 20:32:38,137 - training_logger - INFO - Model saved as /home/disi/ml/checkpoints/efficientnetv2_freeze_aircraft_try/efficientnetv2_freeze_aircraft_epoch20.pth

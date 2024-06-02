@@ -34,6 +34,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
         model.train()
         running_loss = 0.0
         running_acc = 0.0
+        total = 0
 
         for inputs, labels in tqdm(train_loader, desc='Epoch training', unit='batch'):
             inputs, labels = inputs.to(device), labels.to(device)
@@ -44,11 +45,12 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
             optimizer.step()
 
             running_loss += loss.item() * inputs.size(0)
-            preds = torch.argmax(outputs, dim=1)
+            _, preds = torch.max(outputs.data, dim=1)
             running_acc += torch.eq(labels, preds).sum().item()
+            total += labels.size(0)
 
-        epoch_loss = running_loss / len(train_loader.sampler)
-        train_acc = running_acc / len(train_loader.sampler)
+        epoch_loss = running_loss / len(train_loader.dataset)
+        train_acc = running_acc / total
         
         # Validation phase
         val_loss, val_acc = evaluate_model(model, val_loader, criterion, device)

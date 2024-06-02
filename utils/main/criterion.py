@@ -15,7 +15,7 @@ def init_criterion(criterion_name):
 
     Right now there is just CrossEntropyLoss, but we can add more in the future.
     '''
-    if criterion_name == 'cross_entropy':
+    if criterion_name.lower() == 'crossentropyloss':
         criterion = nn.CrossEntropyLoss()
     else:
         raise ValueError("Criterion not found")
