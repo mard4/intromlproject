@@ -36,47 +36,47 @@ def get_data_loaders_optuna(config):
 
     return train_loader, val_loader
 
-def objective_wrapper(trial, model, train_loader, val_loader, criterion, config):
-    def objective(trial):
-        dropout_rate = trial.suggest_float("dropout_rate", 0.2, 0.5)
-        model.add_module("dropout", torch.nn.Dropout(p=dropout_rate))
+def objective(trial, model, train_loader, val_loader, criterion, config):
+    dropout_rate = trial.suggest_float("dropout_rate", 0.2, 0.5)
+    model.add_module("dropout", torch.nn.Dropout(p=dropout_rate))
 
-        optimizer_name = trial.suggest_categorical('optimizer', ['AdamW', 'SGD', 'Adam'])
-        learning_rate = trial.suggest_float('learning_rate', 1e-5, 1e-1, log=True)
-        weight_decay = trial.suggest_float('weight_decay', 1e-6, 1e-2, log=True)
+    optimizer_name = trial.suggest_categorical('optimizer', ['AdamW', 'SGD', 'Adam'])
+    learning_rate = trial.suggest_float('learning_rate', 1e-5, 1e-1, log=True)
+    weight_decay = trial.suggest_float('weight_decay', 1e-6, 1e-2, log=True)
 
-        if optimizer_name == 'SGD':
-            momentum = trial.suggest_float('momentum', 0.5, 0.99)
-            optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=weight_decay, momentum=momentum)
-        elif optimizer_name == 'AdamW':
-            optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
-        else:
-            optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    if optimizer_name == 'SGD':
+        momentum = trial.suggest_float('momentum', 0.5, 0.99)
+        optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=weight_decay, momentum=momentum)
+    elif optimizer_name == 'AdamW':
+        optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    else:
+        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
-        scheduler = StepLR(optimizer, step_size=config['step_size'], gamma=0.1) if config['scheduler'] else None
+    scheduler = StepLR(optimizer, step_size=config['step_size'], gamma=0.1) if config['scheduler'] else None
 
-        val_acc = train_model(
-            model=model,
-            train_loader=train_loader,
-            val_loader=val_loader,
-            optimizer=optimizer,
-            criterion=criterion,
-            scheduler=scheduler,
-            num_epochs=config['opt_epochs'],
-            model_name=config['model_name'],
-            dataset_name=config['dataset_name'],
-            save_dir=config['save_dir'],
-            device=config['device'],
-            optuna=True
-        )
+    val_acc = train_model(
+        model=model,
+        train_loader=train_loader,
+        val_loader=val_loader,
+        optimizer=optimizer,
+        criterion=criterion,
+        scheduler=scheduler,
+        num_epochs=config['opt_epochs'],
+        model_name=config['model_name'],
+        dataset_name=config['dataset_name'],
+        save_dir=config['save_dir'],
+        device=config['device'],
+        patience=config['patience'],
+        trial=trial,
+        optuna=True
+    )
 
-        return val_acc
+    return val_acc
 
-    return objective
 
 def run_optuna(config, model, train_loader, val_loader, criterion):
     study = optuna.create_study(direction='maximize')
-    study.optimize(objective_wrapper(model, train_loader, val_loader, criterion, config), n_trials=config['trials'], timeout=600)
+    study.optimize(lambda trial: objective(trial, model, train_loader, val_loader, criterion, config), n_trials=config['trials'], timeout=600)
 
     best_params = study.best_params
     print(f"Best hyperparameters: {best_params}")

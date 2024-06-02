@@ -1,7 +1,7 @@
 config:
   root: "/home/disi/ml"
   img_folder: "aircraft"
-  model_name: "vit_freeze"
+  model_name: "vit"
   # Path and directory stuff
   data_dir: "{root}/datasets/{img_folder}"  # Directory containing the dataset
   dataset_name: "{img_folder}"  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
@@ -18,7 +18,7 @@ config:
 
   # Training loop
   batch_size: 42  # Batch size (default: 32)
-  epochs: 10  # Number of epochs to train (default: 10)
+  epochs: 5  # Number of epochs to train (default: 10)
   optimizer: "SGD"  # Optimizer to use (default: Adam) or SGD
   optimizer_type: "simple"  # Type of optimizer to use simple or custom (default: simple)
   learning_rate: 0.01  # Learning rate (default: 0.001)
@@ -28,12 +28,15 @@ config:
   scheduler: true # Whether to use a learning rate scheduler (default: true)
   step_size: 10 # Step size for the scheduler (default: 10)
   gamma: 0.1 # Gamma for the scheduler (default: 0.1)
+  dropout_rate: 0.5  # Dropout rate (default: 0.2)
   patience: 5 # Patience for the scheduler (default: 5)
   resize: 256  # Resize the input images to this size before cropping (default: 256)
-  crop: 224  # Crop the input images to this size (default: 224)
+  crop_size: 224  # Crop the input images to this size (default: 224)
 
   # For competition
   comp: False # Whether to use competition mode (default: false)
+  opt_epochs: 2 # Number of epochs to train in competition mode (default: 2)
+  trials: 4  # Number of trials to run in competition mode (default: 4)
 
   # For using Optuna
   optuna: False  # Whether to use Optuna for hyperparameter optimization (default: false)

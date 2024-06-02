@@ -1,0 +1,88 @@
+{
+    "os": "Linux-5.15.0-1064-azure-x86_64-with-glibc2.31",
+    "python": "3.11.8",
+    "heartbeatAt": "2024-05-29T16:12:32.777284",
+    "startedAt": "2024-05-29T16:12:32.293944",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/disi/ml/intromlproject/training-main-optune.py",
+    "codePathLocal": "training-main-optune.py",
+    "codePath": "training-main-optune.py",
+    "git": {
+        "remote": "https://github.com/lorenzochicco99/intromlproject.git",
+        "commit": "4482dcba59007f68516a95c6dcc2f2f893aa4157"
+    },
+    "email": "martina.dangelo@live.it",
+    "root": "/home/disi/ml/intromlproject",
+    "host": "lab4G24P6",
+    "username": "disi",
+    "executable": "/home/disi/ml/.venv/bin/python3",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 2726.41625,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2445.45,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.45,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.45,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.45,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.45,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.45,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3215.476,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.45,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 123.86906433105469,
+            "used": 53.293907165527344
+        }
+    },
+    "gpu": "Tesla T4",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "Tesla T4",
+            "memory_total": 16106127360
+        }
+    ],
+    "memory": {
+        "total": 54.92046356201172
+    }
+}

@@ -1,0 +1,21 @@
+Data loaded correctly
+number of classes 199
+Traceback (most recent call last):
+  File "/home/disi/ml/intromlproject/training-main.py", line 178, in <module>
+    main(config)
+  File "/home/disi/ml/intromlproject/training-main.py", line 136, in main
+    model = load_checkpoint(model, config['checkpoint'], config['device'])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/disi/ml/intromlproject/utils/models_init.py", line 264, in load_checkpoint
+    model.load_state_dict(torch.load(checkpoint_path, map_location=device))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/disi/ml/.venv/lib/python3.11/site-packages/torch/serialization.py", line 997, in load
+    with _open_file_like(f, 'rb') as opened_file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/disi/ml/.venv/lib/python3.11/site-packages/torch/serialization.py", line 444, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/disi/ml/.venv/lib/python3.11/site-packages/torch/serialization.py", line 425, in __init__
+    super().__init__(open(name, mode))
+                     ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/disi/ml/checkpoints/efficientnetv2_CUB_200_211/efficientnetv2_CUB_200_211_epoch5.pth'

@@ -1,0 +1,88 @@
+{
+    "os": "Linux-5.15.0-1064-azure-x86_64-with-glibc2.31",
+    "python": "3.11.8",
+    "heartbeatAt": "2024-05-28T20:08:57.734149",
+    "startedAt": "2024-05-28T20:08:57.299768",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/disi/ml/intromlproject/training-main.py",
+    "codePathLocal": "training-main.py",
+    "codePath": "training-main.py",
+    "git": {
+        "remote": "https://github.com/lorenzochicco99/intromlproject.git",
+        "commit": "d4ed77cc52b61f08132eb29d0ea715f19baa4b8b"
+    },
+    "email": "martina.dangelo@live.it",
+    "root": "/home/disi/ml/intromlproject",
+    "host": "lab4G24P6",
+    "username": "disi",
+    "executable": "/home/disi/ml/.venv/bin/python3",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 2725.120875,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2445.431,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.431,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.431,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3156.787,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3216.172,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.431,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3200.853,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2445.431,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 123.86906433105469,
+            "used": 49.86555099487305
+        }
+    },
+    "gpu": "Tesla T4",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "Tesla T4",
+            "memory_total": 17179869184
+        }
+    ],
+    "memory": {
+        "total": 54.920467376708984
+    }
+}
