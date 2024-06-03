@@ -45,7 +45,7 @@ if config['checkpoint'] is not None:
 print("Parameters loaded")
 
 print("\nRun info:")
-print("Model name: ", config['model_name'])
+print("Model name: ", config['model_name'], model)
 print("Dataset: ", config['dataset_name'])
 print("Batch size: ", config['batch_size'])
 print("Number of epochs: ", config['epochs'])
@@ -54,9 +54,9 @@ print("Learning Rate: ", config['learning_rate'])
 print("Dropout Rate: ", config['dropout_rate'])
 print("Weight Decay: ", config['weight_decay'])
 print("Momentum: ", config['momentum'])
-print("Criterion: ", config['criterion'])
-print("Optimizer: ", config['optimizer'])
-print("Scheduler: ", config['scheduler'])
+print("Criterion: ", config['criterion'], criterion)
+print("Optimizer: ", config['optimizer'], optimizer)
+print("Scheduler: ", config['scheduler'], scheduler)
 print("Scheduler Step Size: ", config['step_size'])
 print("Scheduler Gamma: ", config['gamma'])
 print("Patience: ", config['patience'])
@@ -104,6 +104,13 @@ if config['optuna']:
         "new best parameters":best_params,
         "config":config
     })
+
+    print("New best parameters:")
+    print("Dropout rate: ", best_params['dropout_rate'])
+    print("Optimizer: ", optimizer)
+    print("Learning rate: ", best_params['learning_rate'])
+    print("Weight decay: ", best_params['weight_decay'])
+    print("Momentum: ", best_params['momentum'])
 
 # Load data
 if not config['comp']:
