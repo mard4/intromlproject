@@ -1,7 +1,7 @@
 config:
   root: "/home/disi/ml"
   img_folder: "aircraft"
-  model_name: "vit"
+  model_name: "efficientnetv2"
   # Path and directory stuff
   data_dir: "{root}/datasets/{img_folder}"  # Directory containing the dataset
   dataset_name: "{img_folder}"  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
@@ -19,9 +19,9 @@ config:
   # Training loop
   batch_size: 42  # Batch size (default: 32)
   epochs: 5  # Number of epochs to train (default: 10)
-  optimizer: "SGD"  # Optimizer to use (default: Adam) or SGD
+  optimizer: "AdamW"  # Optimizer to use (default: Adam) or SGD
   optimizer_type: "simple"  # Type of optimizer to use simple or custom (default: simple)
-  learning_rate: 0.01  # Learning rate (default: 0.001)
+  learning_rate: 0.001  # Learning rate (default: 0.001)
   weight_decay: 0.1  # Weight decay for optimizer (default: 0)
   momentum: 0.2  # Momentum for optimizer (default: 0)
   criterion: "CrossEntropyLoss"  # Criterion for the loss function (default: CrossEntropyLoss)

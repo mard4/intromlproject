@@ -5,7 +5,7 @@ from torch.optim.lr_scheduler import StepLR
 import time
 from tqdm import tqdm
 import wandb
-
+from torch import optim
 
 def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, 
                 num_epochs, device, patience, model_name, dataset_name, save_dir, 
@@ -25,7 +25,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
             current_lr = optimizer.param_groups[0]['lr']
         print(f'Epoch {epoch+1}/{num_epochs}, Current Learning Rate: {current_lr}')     
 
-        if model_name == 'seresnet' and epoch < 13:
+        if model_name == 'seresnet50' and epoch < 13:
             model.unfreeze_layer(-(epoch + 1))
             # NB seresnet has to be used with SDG optimizer
             optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr=0.001, momentum=0.9)
