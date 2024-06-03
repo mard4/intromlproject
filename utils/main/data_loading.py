@@ -1,11 +1,12 @@
 import os
 from torchvision import transforms, datasets
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, random_split, Subset
 
 
 def get_data_loaders(data_dir, batch_size=32,
                      resize=(256, 256), crop=(224, 224),
-                     mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
+                     mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],
+                     pytorch_dataset = False):
     '''
     Returns data loaders for training, validation, and testing datasets.
 
@@ -22,9 +23,10 @@ def get_data_loaders(data_dir, batch_size=32,
     - val_loader (torch.utils.data.DataLoader): The data loader for the validation dataset.
     - test_loader (torch.utils.data.DataLoader): The data loader for the testing dataset.
     '''
-    train_dir = os.path.join(data_dir, 'train')
-    val_dir = os.path.join(data_dir, 'val')
-    test_dir = os.path.join(data_dir, 'test')
+    if not pytorch_dataset:
+        train_dir = os.path.join(data_dir, 'train')
+        val_dir = os.path.join(data_dir, 'val')
+        test_dir = os.path.join(data_dir, 'test')
 
     train_transform = transforms.Compose([
         transforms.Resize(resize),
@@ -50,9 +52,28 @@ def get_data_loaders(data_dir, batch_size=32,
         transforms.Normalize(mean=mean, std=std)
     ])
 
-    train_dataset = datasets.ImageFolder(train_dir, transform=train_transform)
-    val_dataset = datasets.ImageFolder(val_dir, transform=val_transform)
-    test_dataset = datasets.ImageFolder(test_dir, transform=test_transform)
+    if pytorch_dataset:
+        if data_dir == 'pets':
+            dataset = datasets.OxfordIIITPet(root='data', split='trainval', download=True)
+            data_len = len(dataset)
+            train_indices, val_indices = random_split(range(data_len), [data_len*0.7, data_len*0.3])
+            train_dataset = Subset(
+            datasets.OxfordIIITPet(root='data', split='trainval', transform=train_transform, download=True),
+                train_indices
+            )
+            val_dataset = Subset(
+                datasets.OxfordIIITPet(root='data', split='trainval', transform=val_transform, download=True),
+                val_indices
+            )
+            test_dataset = datasets.OxfordIIITPet(root='data', split='test', transform=test_transform, download=True)
+        if data_dir == 'aircraft':
+            train_dataset = datasets.FGVC_Aircraft(root='data', split='train', transform=train_transform, download=True)
+            val_dataset = datasets.FGVC_Aircraft(root='data', split='val', transform=val_transform, download=True)
+            test_dataset = datasets.FGVC_Aircraft(root='data', split='test', transform=test_transform, download=True)
+    else:
+        train_dataset = datasets.ImageFolder(train_dir, transform=train_transform)
+        val_dataset = datasets.ImageFolder(val_dir, transform=val_transform)
+        test_dataset = datasets.ImageFolder(test_dir, transform=test_transform)
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=8)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=8)
