@@ -135,19 +135,19 @@ Only the name of the specific dataset and the name of the folders containing the
 
 You can check the `models_initializers` dictionary inside the `init_model` function in the `models_init.py` file to see all the models implemented, copy and paste the name of the model you want to use, then open the `config.yaml` to set the training up.
 
-Paste in the variable `model_name` what you just copied, then edit the variables `root`, `img_folder` accordingly to your specific system path. Referring to the graph above, `img_folder` should be named as `CUB200-2011` or `Flowers102` etc, lastly `root` should be the system path up until the folder I suggested to you to call `ml`, which is the folder that contains the virtual environment, the datasets and the repository.
+Paste in the variable `model_name` what you just copied, then edit the variables `root`, `img_folder` accordingly to your specific system path. Referring to the graph above, `img_folder` should be named as `CUB200-2011` or `Flowers102` etc. If you used a pytorch dataset `img_folder` should be named as the folder you downloaded. Lastly `root` should be the system path up until the folder I suggested to you to call `ml`, which is the folder that contains the virtual environment, the datasets and the repository.
 
-After this, edit the files inside the config however you desire, the f-strings will allow for a smoother experience automatically constructing the correct paths for everything that will be tracked during the training.
+After this, edit the files inside the `config.yaml` however you desire, the f-strings will allow for a smoother experience automatically constructing the correct paths for everything that will be tracked during the training. At the bottom of it there are boolean values for `train` and `test` depending on what you want to do with your model.
 
-Once you have set the training up, you can just run the file from the terminal (remember to have the virtual environment activated).
+Once you have set the training up, you can just run the file from the terminal (remember to have the virtual environment activated) and make sure that you have navigated in `ml`, not `intromlproject`.
 
-After you trained your model, there will be a new folder which will contain the weights saved as a .pth file. If you wish to keep training the model, you can just edit the `training-main.py` file adding the checkpoint instead of leaving it to None. You can keep repeating this until you are satisfied with your results.
+After you trained your model, there will be a new folder which will contain the weights saved as a .pth file. If you wish to keep training the model, you can just edit the config file adding the checkpoint instead of leaving it to None. You can keep repeating this until you are satisfied with your results.
 
 
 #### Testing
-Now that our model is ready, we can test it. 
+Now that the model is ready, we can test it. 
 
-Open the `config.yaml` and select the checkpoint you saved after training (it's done automatically) and set the boolean value for testing to True.
+Open the `config.yaml` and insert the path the checkpoint you saved (it's done automatically) after training in `checkpoint` and set the boolean value for `test` to True. If both booleans are set to True, the model will first train itself, then test itself.
 ## Authors
 - [Lorenzo Chicco](https://github.com/lorenzochicco99/)
 - [Martina D'Angelo](https://github.com/mard4/)
