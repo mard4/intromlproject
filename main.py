@@ -23,13 +23,13 @@ with open('intromlproject/config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 config = config['config']
+config['img_folder'] = config['img_folder'].format(img_folder=config['dataset_name'])
 config['data_dir'] = config['data_dir'].format(root=config['root'], img_folder=config['img_folder'])
 config['save_dir'] = config['save_dir'].format(root=config['root'], model_name=config['model_name'], img_folder=config['img_folder'])
 if config['checkpoint'] is not None:
     config['checkpoint'] = config['checkpoint'].format(root=config['root'])
 config['device'] = "cuda" if torch.cuda.is_available() else "cpu"
 config['project_name'] = config['project_name'].format(model_name=config['model_name'])
-config['dataset_name'] = config['dataset_name'].format(img_folder=config['img_folder'])
 
 # Some order and other variables
 config['num_classes'] = len(os.listdir(config['data_dir'] + '/train'))
@@ -115,7 +115,7 @@ if config['optuna']:
 # Load data
 if not config['comp']:
     train_loader, val_loader, test_loader = get_data_loaders(config['data_dir'], config['batch_size'], config['resize'],
-                                                             config['crop_size'], config['mean'], config['std'])
+                                                             config['crop_size'], config['mean'], config['std'], config['pytorch_dataset'])
     print("Data loaded")
 else:
     if config['dataset_name'] != 'comp':
