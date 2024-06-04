@@ -63,54 +63,60 @@ The starting configuration will look something like this:
 - virtualenvironment
 
 - intromlproject
+  
+  - `images-readme` $\to$ contains the images for the readme, you can ignore this.
 
-  - `config.yaml` $\to$ the configuration file where you can customize all aspects of model training and settings.
+  - `config.yaml` $\to$ the configuration file where you can customize all aspects of model training, testing and settings.
   
-  - `requirements.txt`
+  - `requirements.txt` $\to$ contains the requirements for python to run the project.
   
-  - `data-setupper.ipynb` $\to$ notebook used to download and prepare data.
+  - `data-setupper.ipynb` $\to$ notebook used to download and prepare data downloaded from the internet.
   
-  - `training-main.py` $\to$ python script that trains and validates the chosen model.
-  
-  - `training-main-optune.py` $\to$ python script that optimizes the hyperparameters of the model, then trains and validates it.
-  
-  - `testing-main.py` $\to$ python script that tests the provided model.
- 
+  - `main.py` $\to$ python script that trains and validates the chosen model or tests it.
+   
   - utils/
-    
-    - `augmentation.py` $\to$ contains functions for data augmentation.
-    
-    - `custom_models.py` $\to$ contains functions to built models from scratch.
-    
-    - `downloader.py` $\to$ contains functions to download data from different sources.
-    
-    - `extractors.py` $\to$ contains functions to extract different archived files.
-    
-    - `logger.py` $\to$ contains a function which initializes the logger.
-    
-    - `models_init.py` $\to$ contains functions to initialize models from already existing libraries.
-    
-    - `optimizers.py` $\to$ contains a function to implement a custom optimizer. TODO
-    
-    - `testing.py` $\to$ contains the function to test a model and send files to the competition server.
-    
-    - `training.py` $\to$ contains the functions to train and validate the model for a single epoch. 
-    
-    - `testing.py` $\to$ contains the function to test a model storing the predictions in a dictionary and submits it to a server.
+ 
+    - data_setupper/
+ 
+      - `augmentation.py` $\to$ contains functions for data augmentation.
+        
+      - `dataset_reader.py` $\to$ contains functions to organize downloaded data in the correct manner.
+      
+      - `downloader.py` $\to$ contains functions to download data from different sources.
+      
+      - `extractors.py` $\to$ contains functions to extract different archived files.
 
-  - exam/
-    
-    - `testing-main-exam.py` $\to$ python script that tests a model and uploads to the exam website the results.
+    - main/
 
-    - `testing.py` $\to$ contains the functions to test a model and to upload the results.
+      - `criterion.py` $\to$ contains a function which initializes the loss.
 
-    - `testing-main-optune.py` $\to$ TODO
+      - `data_loading.py` $\to$ contains functions that provide data loaders for training, validation, and testing datasets.
 
+      - `exam.py` $\to$ contains functions to test and submit the results the day of the competition.
 
+      - `models_init.py` $\to$ contains functions to initialize models.
+      
+      - `optimizers.py` $\to$ contains a function to implement a custom or simple optimizer.
+      
+      - `optuna.py` $\to$ contains the function to setup optuna in order to find the best hyperparameters.
+      
+      - `scheduler.py` $\to$ contains the functions to instantiate the scheduler.
+      
+      - `training.py` $\to$ contains the function to train and validate a model.
+
+      - models/
+        
+        - `senet.py` $\to$ contains the class to instantiate the SENet.
+        
+        - `vit.py` $\to$ contains the class to instantiate the VIT.
+      
 ## Usage
 
 #### Datasets
+## Pytorch Dataset
+Open the `config.yaml` file and find the boolean value for `pytorch_dataset` and set it to True, then `img_folder` equal to the name of the folder containing the dataset. If you do not have the dataset, it will be automatically downloaded. If you get an error, it's because the `img_folder` name is different from the folder you just downloaded, you can just copy the name of the newly downloaded folder in the `img_folder` value of the yaml file.
 
+## Downloaded Dataset
 Navigate inside the repository, then you can use the `data_setupper.ipynb` notebook to download any dataset of your choosing. We decided to use a notebook instead of a .py file because the datasets we tried came from different sources (kaggle, torch, generic websites) and we wanted to have the flexibility to just download them and store them inside a datasets folder, which will be automatically created during your first download. 
 
 All you have to do is follow the comments `@edit` and edit accordingly to your computers paths. If you called the parent folder "ml", then some paths are already correct. More information is available inside the notebook. If you followed the procedure correctly you will have the following datasets configuration:
@@ -127,7 +133,7 @@ Only the name of the specific dataset and the name of the folders containing the
 
 #### Training
 
-You can check the `model_initializers` dictionary inside the `init_model` function in the `models_init.py` to see all the models implemented, copy and paste the name of the model you want to use, then open the `training-main.py` to set the training up.
+You can check the `models_initializers` dictionary inside the `init_model` function in the `models_init.py` file to see all the models implemented, copy and paste the name of the model you want to use, then open the `config.yaml` to set the training up.
 
 Paste in the variable `model_name` what you just copied, then edit the variables `root`, `img_folder` accordingly to your specific system path. Referring to the graph above, `img_folder` should be named as `CUB200-2011` or `Flowers102` etc, lastly `root` should be the system path up until the folder I suggested to you to call `ml`, which is the folder that contains the virtual environment, the datasets and the repository.
 
@@ -141,10 +147,7 @@ After you trained your model, there will be a new folder which will contain the 
 #### Testing
 Now that our model is ready, we can test it. 
 
-Open the `testing-main.py` and notice how the file is extremely similar to the training one. The most important thing is to make sure to select the correct model and path to your save file (a file ending in .pth) to load its weights. Make sure that the test dataset is loaded correctly. Then just run the file from the virtual environment like we did for the training one.  
-
-## Reference
-
+Open the `config.yaml` and select the checkpoint you saved after training (it's done automatically) and set the boolean value for testing to True.
 ## Authors
 - [Lorenzo Chicco](https://github.com/lorenzochicco99/)
 - [Martina D'Angelo](https://github.com/mard4/)
