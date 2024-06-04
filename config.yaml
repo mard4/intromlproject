@@ -1,11 +1,11 @@
 config:
   root: "/home/disi/ml"
-  img_folder: "aircraft"
+  img_folder: "{dataset_name}"
   model_name: "efficientnetv2"
   # Path and directory stuff
   data_dir: "{root}/datasets/{img_folder}"  # Directory containing the dataset
-  dataset_name: "{img_folder}"  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
-
+  dataset_name: "aircraft"  # Name of the dataset you are using, doesn't need to match the real name, just a word to distinguish it
+  pytorch_dataset: true
 
   # !!! leave checkpoint as null if you don't have one
   checkpoint:  null #'{root}/checkpoints/efficientnetv2_aircraft/efficientnetv2_aircraft_epoch6.pth'  # Path to a checkpoint file to resume training or to test a model (set null if not needed)
