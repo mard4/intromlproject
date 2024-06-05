@@ -146,11 +146,12 @@ After you trained your model, there will be a new folder which will contain the 
 
 #### Testing
 Now that the model is ready, we can test it. 
+Open the `config.yaml` and insert the path the checkpoint you saved (it's done automatically) after training in `checkpoint` and set the boolean value for `test` to True. If both booleans are set to True, the model will first train itself, then test itself.
 
 #### Models
 We explore various approaches to address the challenges associated with fine-grained image classification. We scrutinize the application of transfer learning, EfficientNet, DenseNet, SENet, and the ViT Transformer, along with a method for hyperparameter optimization (Optuna). Despite experimenting with other techniques, such as the NTS-Net (Navigator-Teacher-Scrutinizer Network), we were unable to provide adequate outcomes worthy to be included in the report 
 
-Open the `config.yaml` and insert the path the checkpoint you saved (it's done automatically) after training in `checkpoint` and set the boolean value for `test` to True. If both booleans are set to True, the model will first train itself, then test itself.
+
 ## Authors
 - [Lorenzo Chicco](https://github.com/lorenzochicco99/)
 - [Martina D'Angelo](https://github.com/mard4/)
