@@ -25,9 +25,9 @@ Fine-Grained Image Classification is a task in computer vision where the goal is
 - <a href='#structure'>Structure</a>
 - <a href='#datasets'>Datasets</a>
 - <a href='#training'>Training</a>
+- <a href='#optuna'>Training</a>
 - <a href='#testing'>Testing</a>
 - <a href='#models'>Models</a>
-- <a href='#reference'>Reference</a>
 - <a href='#authors'>Authors</a>
 
 ## Installation
@@ -140,6 +140,9 @@ After this, edit the files inside the `config.yaml` however you desire, the f-st
 Once you have set the training up, you can just run the file from the terminal (remember to have the virtual environment activated) and make sure that you have navigated in `ml`, not `intromlproject`.
 
 After you trained your model, there will be a new folder which will contain the weights saved as a .pth file. If you wish to keep training the model, you can just edit the config file adding the checkpoint instead of leaving it to None. You can keep repeating this until you are satisfied with your results.
+
+#### Optuna
+If you want to use Optuna for hyperparameter optimization, you can set option `optuna: True` in `config.yaml`, it's advisable to choose carefully the number of `trials` and `epochs` also. 
 
 
 #### Testing
