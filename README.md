@@ -23,7 +23,6 @@ Fine-Grained Image Classification is a task in computer vision where the goal is
 
 - <a href='#installation'>Installation</a>
 - <a href='#structure'>Structure</a>
-- <a href='#usage'>Usage</a>
 - <a href='#datasets'>Datasets</a>
 - <a href='#training'>Training</a>
 - <a href='#testing'>Testing</a>
@@ -110,8 +109,7 @@ The starting configuration will look something like this:
         
         - `vit.py` $\to$ contains the class to instantiate the VIT.
       
-## Usage
-
+### Usage 
 #### Datasets
 ## Pytorch Dataset
 Open the `config.yaml` file and find the boolean value for `pytorch_dataset` and set it to True, then `img_folder` equal to the name of the folder containing the dataset. If you do not have the dataset, it will be automatically downloaded. If you get an error, it's because the `img_folder` name is different from the folder you just downloaded, you can just copy the name of the newly downloaded folder in the `img_folder` value of the yaml file.
@@ -129,7 +127,7 @@ All you have to do is follow the comments `@edit` and edit accordingly to your c
 
 Only the name of the specific dataset and the name of the folders containing the images will differ based on what you downloaded.
 
-#### Model training and testing
+### Model training and testing
 
 #### Training
 
