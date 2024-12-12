@@ -19,6 +19,17 @@ Fine-Grained Image Classification is a task in computer vision where the goal is
   <img src="https://github.com/devicons/devicon/blob/master/icons/tensorflow/tensorflow-original.svg" title="TensorFlow" alt="TensorFlow" width="40" height="40"/>
 </div>
 
+<div align="center">
+
+| [<b>Final Report</b>](Presentation_1/Img/First_presentation.pdf) |  
+|:---------------------------------------------------------------:|  
+| [![](images-readme/thumbnail.png)](Report)                     |
+
+</div>
+          |
+
+
+
 ### Table of Contents
 
 - <a href='#installation'>Installation</a>
